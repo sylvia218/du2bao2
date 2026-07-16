@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DU2BAO2 — trusted marketplace for authenticated pre-owned luxury." />
+  <title>DU2BAO2 | Pre-Owned Luxury Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#">DU<span>2</span>BAO<span>2</span></a>
+    <nav class="desktop-nav">
+      <a href="#browse">Browse</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#trust">Authenticity</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" id="wishlistButton" aria-label="Open wishlist">♡ <span id="wishlistCount">0</span></button>
+      <button class="ghost-btn" id="loginButton">Log in</button>
+      <button class="primary-btn" id="sellButton">Sell an item</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">PRE-OWNED. AUTHENTIC. REMARKABLE.</span>
+        <h1>Luxury deserves a<br><em>second story.</em></h1>
+        <p>Buy and sell authenticated designer bags, watches, jewellery, fashion and collectibles with confidence.</p>
+        <div class="hero-actions">
+          <a class="primary-btn large" href="#browse">Shop luxury</a>
+          <button class="secondary-btn large" id="heroSellButton">Start selling</button>
+        </div>
+        <div class="trust-row">
+          <span>✓ Authenticity checked</span>
+          <span>✓ Secure payments</span>
+          <span>✓ Buyer protection</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-label="Luxury handbag display">
+        <div class="gold-orbit"></div>
+        <div class="bag-card">
+          <div class="bag-handle"></div>
+          <div class="bag-body"><span>DU2</span></div>
+        </div>
+        <div class="floating-tag top">Verified authentic</div>
+        <div class="floating-tag bottom">Save up to 70%</div>
+      </div>
+    </section>
+
+    <section class="categories" aria-label="Shop by category">
+      <button class="category active" data-category="All"><span>✦</span>All</button>
+      <button class="category" data-category="Bags"><span>▱</span>Bags</button>
+      <button class="category" data-category="Watches"><span>◷</span>Watches</button>
+      <button class="category" data-category="Jewellery"><span>◇</span>Jewellery</button>
+      <button class="category" data-category="Fashion"><span>♢</span>Fashion</button>
+      <button class="category" data-category="Shoes"><span>⌁</span>Shoes</button>
+      <button class="category" data-category="Collectibles"><span>✧</span>Collectibles</button>
+    </section>
+
+    <section class="marketplace" id="browse">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">CURATED FOR YOU</span>
+          <h2>Fresh luxury finds</h2>
+        </div>
+        <div class="market-tools">
+          <label class="search-box">
+            <span>⌕</span>
+            <input id="searchInput" type="search" placeholder="Search brand or item" />
+          </label>
+          <select id="sortSelect" aria-label="Sort listings">
+            <option value="featured">Featured</option>
+            <option value="low">Price: low to high</option>
+            <option value="high">Price: high to low</option>
+          </select>
+        </div>
+      </div>
+      <div class="product-grid" id="productGrid"></div>
+      <p class="empty-state" id="emptyState" hidden>No matching pieces found. Try another search.</p>
+    </section>
+
+    <section class="how-it-works" id="how-it-works">
+      <div class="section-heading centered">
+        <span class="eyebrow">SIMPLE & SECURE</span>
+        <h2>Sell in three easy steps</h2>
+      </div>
+      <div class="steps">
+        <article><span>01</span><h3>List your item</h3><p>Add clear photos, condition details and your asking price.</p></article>
+        <article><span>02</span><h3>Get authenticated</h3><p>Qualified items are reviewed before delivery to protect both sides.</p></article>
+        <article><span>03</span><h3>Receive payment</h3><p>Your payout is released after the buyer receives and accepts the item.</p></article>
+      </div>
+    </section>
+
+    <section class="trust-banner" id="trust">
+      <div>
+        <span class="eyebrow light">THE DU2BAO2 PROMISE</span>
+        <h2>Real luxury. No guesswork.</h2>
+        <p>Build trust into every transaction with seller verification, item authentication, secure checkout and dispute support.</p>
+      </div>
+      <div class="trust-stat"><strong>100%</strong><span>money-back protection for items proven inauthentic</span></div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="brand light-brand" href="#">DU<span>2</span>BAO<span>2</span></a>
+    <p>Malaysia’s trusted pre-owned luxury marketplace.</p>
+    <small>© 2026 DU2BAO2. Prototype marketplace.</small>
+  </footer>
+
+  <dialog id="sellDialog">
+    <form method="dialog" id="sellForm">
+      <button class="dialog-close" value="cancel" aria-label="Close">×</button>
+      <span class="eyebrow">SELL WITH DU2BAO2</span>
+      <h2>List your luxury item</h2>
+      <div class="form-grid">
+        <label>Item title<input name="title" required placeholder="e.g. Chanel Classic Flap Medium" /></label>
+        <label>Brand<input name="brand" required placeholder="e.g. Chanel" /></label>
+        <label>Category<select name="category" required><option>Bags</option><option>Watches</option><option>Jewellery</option><option>Fashion</option><option>Shoes</option><option>Collectibles</option></select></label>
+        <label>Price (RM)<input name="price" type="number" min="1" required placeholder="8500" /></label>
+        <label>Condition<select name="condition" required><option>Like new</option><option>Excellent</option><option>Good</option><option>Fair</option></select></label>
+        <label>Location<input name="location" required placeholder="Petaling Jaya" /></label>
+      </div>
+      <label>Description<textarea name="description" required placeholder="Describe condition, inclusions, year purchased and any signs of use."></textarea></label>
+      <label class="upload-box">Product photos<input name="photos" type="file" accept="image/*" multiple /><span>Choose clear photos from every angle</span></label>
+      <button class="primary-btn submit-btn" type="submit">Submit listing</button>
+      <p class="form-note">Demo only: connect this form to Supabase or Firebase before accepting real listings.</p>
+    </form>
+  </dialog>
+
+  <dialog id="loginDialog">
+    <form method="dialog" class="login-form">
+      <button class="dialog-close" value="cancel" aria-label="Close">×</button>
+      <span class="eyebrow">WELCOME BACK</span>
+      <h2>Log in to DU2BAO2</h2>
+      <label>Email<input type="email" required placeholder="you@example.com" /></label>
+      <label>Password<input type="password" required placeholder="••••••••" /></label>
+      <button class="primary-btn submit-btn" type="submit">Log in</button>
+      <p class="form-note">Authentication is a UI demo until a backend is connected.</p>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
