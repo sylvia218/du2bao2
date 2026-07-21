@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#17130f" />
+  <meta name="description" content="View a product listing on DU2BAO2." />
+  <title>Product | DU2BAO2</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=3" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">DU<span>2</span>BAO<span>2</span></a>
+    <nav class="desktop-nav"><a href="index.html#browse">Browse</a><a href="index.html#how-it-works">How it works</a><a href="index.html#trust">Safety</a></nav>
+    <div class="header-actions"><a class="ghost-btn" href="index.html#browse">Back to marketplace</a></div>
+  </header>
+
+  <main class="product-page-main">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span><a href="index.html#browse">Marketplace</a><span>›</span><span id="breadcrumbName">Product</span></div>
+    <div class="detail-loading" id="detailLoading"></div>
+    <section class="product-detail" id="productDetail" hidden></section>
+    <section class="related-section" id="relatedSection" hidden>
+      <span class="eyebrow">YOU MAY ALSO LIKE</span>
+      <h2>Related listings</h2>
+      <div class="product-grid" id="relatedGrid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div><a class="brand light-brand" href="index.html">DU<span>2</span>BAO<span>2</span></a><p>Malaysia’s responsive pre-owned marketplace.</p></div>
+    <div class="footer-links"><a href="index.html#browse">Browse</a><a href="index.html">Home</a></div>
+    <small>© 2026 DU2BAO2. Marketplace platform prototype.</small>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js?v=3"></script>
+  <script src="data.js?v=3"></script>
+  <script src="product.js?v=3"></script>
+</body>
+</html>
