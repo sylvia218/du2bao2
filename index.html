@@ -229,7 +229,19 @@
           <label class="register-only" hidden>Display name<input name="display_name" maxlength="80" placeholder="How buyers will see you" /></label>
           <label>Email<input name="email" type="email" required autocomplete="email" placeholder="you@example.com" /></label>
           <label>Password<input name="password" type="password" required minlength="6" autocomplete="current-password" placeholder="Minimum 6 characters" /></label>
-          <button class="primary-btn submit-btn" id="authSubmitButton" type="submit">Log in</button>
+          <button class="primary-btn submit-btn" id="authSubmitButton" type="submit">
+            Log in
+          </button>
+
+          <div class="login-divider">
+            <span>or</span>
+          </div>
+
+          <button type="button" id="googleLoginBtn" class="google-login-btn">
+            <span class="google-icon">G</span>
+            Continue with Google
+          </button>
+
           <p class="form-message" id="authMessage"></p>
         </form>
       </div>
