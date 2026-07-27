@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="styles.css?v=4" />
 </head>
 <body>
   <a class="skip-link" href="#browse">Skip to listings</a>
@@ -165,18 +165,48 @@
     </section>
   </main>
 
-  <footer>
-    <div>
+  <footer class="site-footer">
+  <div class="footer-main">
+    <div class="footer-about">
       <a class="brand light-brand" href="index.html">DU<span>2</span>BAO<span>2</span></a>
-      <p>Malaysia’s responsive pre-owned marketplace.</p>
+      <p>Malaysia’s pre-owned marketplace where buyers and sellers communicate and complete transactions directly.</p>
+      <span class="footer-note">DU2BAO2 does not hold buyer funds, provide escrow, arrange delivery or guarantee item authenticity in the current marketplace model.</span>
     </div>
-    <div class="footer-links">
-      <a href="#browse">Browse</a>
-      <button class="footer-button sell-trigger">Sell</button>
-      <button class="footer-button" id="footerAccountButton">Account</button>
+
+    <div class="footer-column">
+      <h3>Marketplace help</h3>
+      <a href="shipping.html">Shipping Information</a>
+      <a href="returns.html">Cancellation &amp; Return Policy</a>
+      <a href="safety.html">Safety &amp; Complaints</a>
+      <a href="contact.html">Contact Us</a>
     </div>
-    <small>© 2026 DU2BAO2. Marketplace platform prototype.</small>
-  </footer>
+
+    <div class="footer-column">
+      <h3>Legal &amp; seller rules</h3>
+      <a href="privacy.html">Privacy Notice</a>
+      <a href="terms.html">Terms &amp; Conditions</a>
+      <a href="prohibited-items.html">Prohibited Items</a>
+      <a href="seller-rules.html">Seller Responsibilities</a>
+      <a href="marketplace-role.html">Marketplace Role</a>
+    </div>
+
+    <div class="footer-support">
+      <a class="footer-support-row" href="contact.html">
+        <span class="footer-support-icon" aria-hidden="true">✉</span>
+        <span><strong>PLATFORM SUPPORT</strong><small>Open the Contact Us page</small></span>
+      </a>
+      <a class="footer-support-row" href="marketplace-role.html">
+        <span class="footer-support-icon" aria-hidden="true">↔</span>
+        <span><strong>TRANSACTION MODEL</strong><small>Buyer and seller deal directly</small></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <small>© 2026 DU2BAO2. All rights reserved.</small>
+    <small>Pre-launch legal drafts must be reviewed and completed with the registered entity and contact details before public launch.</small>
+  </div>
+</footer>
 
   <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
     <a href="index.html"><span>⌂</span>Home</a>
@@ -229,19 +259,7 @@
           <label class="register-only" hidden>Display name<input name="display_name" maxlength="80" placeholder="How buyers will see you" /></label>
           <label>Email<input name="email" type="email" required autocomplete="email" placeholder="you@example.com" /></label>
           <label>Password<input name="password" type="password" required minlength="6" autocomplete="current-password" placeholder="Minimum 6 characters" /></label>
-          <button class="primary-btn submit-btn" id="authSubmitButton" type="submit">
-            Log in
-          </button>
-
-          <div class="login-divider">
-            <span>or</span>
-          </div>
-
-          <button type="button" id="googleLoginBtn" class="google-login-btn">
-            <span class="google-icon">G</span>
-            Continue with Google
-          </button>
-
+          <button class="primary-btn submit-btn" id="authSubmitButton" type="submit">Log in</button>
           <p class="form-message" id="authMessage"></p>
         </form>
       </div>
@@ -293,8 +311,8 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js?v=3"></script>
-  <script src="data.js?v=3"></script>
-  <script src="script.js?v=3"></script>
+  <script src="config.js?v=4"></script>
+  <script src="data.js?v=4"></script>
+  <script src="script.js?v=4"></script>
 </body>
 </html>

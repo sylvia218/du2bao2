@@ -8,9 +8,9 @@
   Never place your Supabase service-role key in this file.
 */
 window.DU2BAO2_CONFIG = {
-  SUPABASE_URL: "https://syrlnxtzqwdijhdrqsav.supabase.co",
-  SUPABASE_ANON_KEY: "sb_publishable_BChkgJuAn8RcQSpGOqvHeQ_HC0r078m",
-  ADMIN_EMAILS: ["sylvialeefy@gmail.com"],
-  WHATSAPP_NUMBER: "60163779708",
+  SUPABASE_URL: "",
+  SUPABASE_ANON_KEY: "",
+  ADMIN_EMAILS: ["your-admin-email@example.com"],
+  WHATSAPP_NUMBER: "60123456789",
   SITE_URL: "https://du2bao2.com"
 };

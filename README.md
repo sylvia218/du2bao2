@@ -241,3 +241,36 @@ This version includes marketplace listings, accounts, approvals, images, dashboa
 - Database backups and monitoring
 
 Do not advertise escrow, guaranteed authentication, buyer protection or secure payment as active services until those systems are actually implemented and tested.
+
+
+## Footer and legal-information upgrade
+
+This package adds a dark multi-column footer inspired by the supplied reference image and links it to these new pages:
+
+- `shipping.html`
+- `returns.html`
+- `privacy.html`
+- `terms.html`
+- `prohibited-items.html`
+- `safety.html`
+- `seller-rules.html`
+- `marketplace-role.html`
+- `contact.html`
+
+The pages are written for the current Stage 1 model: buyers and sellers deal directly, while DU2BAO2 provides listings, accounts, contact, review and complaint functions.
+
+### Complete these placeholders before public launch
+
+Search the legal pages for square brackets and replace:
+
+- `[DU2BAO2 LEGAL ENTITY]`
+- `[ADD REGISTERED ENTITY]`
+- `[ADD NUMBER WHEN REGISTERED]`
+- `[ADD SUPPORT EMAIL]`
+- `[ADD PRIVACY EMAIL]`
+- `[ADD SUPPORT NUMBER, IF USED]`
+- `[ADD SUPPORT HOURS]`
+- `[ADD ADDRESS]`
+- `[ADD REGISTERED OR SERVICE ADDRESS]`
+
+These pages are practical drafts and should receive a final Malaysian legal review. Adding policy pages alone does not make the marketplace fully compliant. In particular, the uploaded prototype still needs the final seller-identity, Bahasa Malaysia disclosure, complaint-record and retention workflow to be implemented in the database and listing form before public launch.

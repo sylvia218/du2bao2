@@ -1,8 +1,17 @@
-const CACHE_NAME = "du2bao2-v3-login-close-fix";
+const CACHE_NAME = "du2bao2-v4-legal-footer";
 const LOCAL_FILES = [
   "./",
   "./index.html",
   "./product.html",
+  "./shipping.html",
+  "./returns.html",
+  "./privacy.html",
+  "./terms.html",
+  "./prohibited-items.html",
+  "./safety.html",
+  "./seller-rules.html",
+  "./marketplace-role.html",
+  "./contact.html",
   "./styles.css",
   "./script.js",
   "./product.js",
