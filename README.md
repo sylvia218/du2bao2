@@ -1,6 +1,6 @@
 # DU2BAO2
 
-> Update: Login dialog close fix added. The × button, backdrop click and Escape key now close account dialogs reliably, and the service-worker cache version was refreshed. Marketplace — Upgraded Version
+> Update: Added Continue with Google and Continue as guest. Guest mode is browse-only, while Google or email accounts can sell and access the seller dashboard. The service-worker cache version was refreshed.
 
 This is a responsive GitHub Pages website for buying and selling pre-owned products. It works on phones, tablets and desktop browsers from one set of source files.
 
@@ -22,6 +22,8 @@ This is a responsive GitHub Pages website for buying and selling pre-owned produ
 - Individual shareable product pages
 - Wishlist saved in the visitor's browser
 - Supabase email registration and login
+- Continue with Google login
+- Browse-only guest mode without creating a seller account
 - Seller listing form with up to six photos
 - Supabase Storage image uploads
 - Seller profile name and WhatsApp number
@@ -125,6 +127,37 @@ http://localhost:8000/**
 
 4. Under **Authentication → Providers → Email**, keep Email enabled.
 5. Decide whether users must confirm their email before logging in.
+
+### Enable Google login
+
+1. In Supabase, open **Authentication → Sign In / Providers → Google**.
+2. Leave this page open and copy the callback URL shown by Supabase. It normally looks like:
+
+```text
+https://YOUR-PROJECT-REF.supabase.co/auth/v1/callback
+```
+
+3. In Google Auth Platform, create an **OAuth client ID** with application type **Web application**.
+4. Add these authorised JavaScript origins:
+
+```text
+https://du2bao2.com
+https://www.du2bao2.com
+http://localhost:8000
+```
+
+5. Add the exact Supabase callback URL from step 2 as an authorised redirect URI.
+6. Copy the Google Client ID and Client Secret into the Google provider page in Supabase, then enable and save the provider.
+7. Confirm that Supabase **Authentication → URL Configuration** includes your production and local redirect URLs.
+
+The website button uses Supabase OAuth. Do not place the Google Client Secret in `config.js` or GitHub.
+
+### How guest mode works
+
+- Guest mode is implemented locally in the browser and does not create a Supabase user.
+- Guests may browse products and use the browser-local wishlist.
+- Guests cannot submit listings, open a seller dashboard or access admin controls.
+- Selecting **Sell an item** while in guest mode opens the full registration options.
 
 ## Part 5 — Make your account an admin
 

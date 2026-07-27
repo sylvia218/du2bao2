@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=4" />
+  <link rel="stylesheet" href="styles.css?v=5" />
 </head>
 <body>
   <a class="skip-link" href="#browse">Skip to listings</a>
@@ -251,6 +251,20 @@
       <div id="signedOutPanel">
         <span class="eyebrow">YOUR DU2BAO2 ACCOUNT</span>
         <h2 id="authHeading">Log in</h2>
+        <div class="social-auth-options">
+          <button class="google-auth-btn" id="googleLoginButton" type="button">
+            <span class="google-mark" aria-hidden="true">G</span>
+            Continue with Google
+          </button>
+          <button class="guest-auth-btn" id="guestLoginButton" type="button">
+            <span aria-hidden="true">◎</span>
+            Continue as guest
+          </button>
+          <p class="guest-auth-note">Guest mode is for browsing and saving listings. A full account is required to sell an item.</p>
+        </div>
+
+        <div class="auth-divider"><span>or use email</span></div>
+
         <div class="auth-tabs" role="tablist">
           <button class="active" id="loginTab" type="button">Log in</button>
           <button id="registerTab" type="button">Register</button>
@@ -262,6 +276,7 @@
           <button class="primary-btn submit-btn" id="authSubmitButton" type="submit">Log in</button>
           <p class="form-message" id="authMessage"></p>
         </form>
+        <p class="auth-legal-note">By continuing, you agree to the <a href="terms.html">Terms &amp; Conditions</a> and acknowledge the <a href="privacy.html">Privacy Notice</a>.</p>
       </div>
 
       <div id="signedInPanel" hidden>
@@ -271,6 +286,7 @@
         <div class="account-actions">
           <button class="secondary-btn" id="dashboardButton">Seller dashboard</button>
           <button class="secondary-btn" id="adminButton" hidden>Admin approvals</button>
+          <button class="primary-btn" id="guestUpgradeButton" hidden>Sign in to start selling</button>
           <button class="danger-btn" id="logoutButton">Log out</button>
         </div>
       </div>
@@ -311,8 +327,8 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js?v=4"></script>
-  <script src="data.js?v=4"></script>
-  <script src="script.js?v=4"></script>
+  <script src="config.js?v=5"></script>
+  <script src="data.js?v=5"></script>
+  <script src="script.js?v=5"></script>
 </body>
 </html>

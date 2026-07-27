@@ -1,4 +1,4 @@
-const CACHE_NAME = "du2bao2-v4-legal-footer";
+const CACHE_NAME = "du2bao2-v5-google-guest-login";
 const LOCAL_FILES = [
   "./",
   "./index.html",

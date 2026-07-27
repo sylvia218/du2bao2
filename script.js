@@ -18,6 +18,7 @@
     products: [],
     activeCategory: "All",
     currentUser: null,
+    guestMode: sessionStorage.getItem("du2bao2-guest-mode") === "1",
     authMode: "login",
     wishlist: new Set(JSON.parse(localStorage.getItem("du2bao2-wishlist") || "[]")),
     photoUrls: [],
@@ -318,43 +319,68 @@
     return JSON.parse(localStorage.getItem("du2bao2-demo-user") || "null");
   }
 
+  function isGuestUser() {
+    return Boolean(state.guestMode || state.currentUser?.is_anonymous);
+  }
+
   function isAdmin() {
+    if (isGuestUser()) return false;
     const email = state.currentUser?.email?.toLowerCase();
     return Boolean(email && (config.ADMIN_EMAILS || []).some((item) => item.toLowerCase() === email));
   }
 
   function userDisplayName() {
-    return state.currentUser?.user_metadata?.display_name || state.currentUser?.display_name || state.currentUser?.email?.split("@")[0] || "Seller";
+    if (isGuestUser()) return "Guest";
+    return state.currentUser?.user_metadata?.display_name
+      || state.currentUser?.user_metadata?.full_name
+      || state.currentUser?.user_metadata?.name
+      || state.currentUser?.display_name
+      || state.currentUser?.email?.split("@")[0]
+      || "Seller";
   }
 
   function updateAccountUI() {
-    const loggedIn = Boolean(state.currentUser);
-    const label = loggedIn ? userDisplayName() : "Log in";
+    const guest = isGuestUser();
+    const loggedIn = Boolean(state.currentUser) || guest;
+    const label = guest ? "Guest" : (loggedIn ? userDisplayName() : "Log in");
     [$("#accountButton"), $("#mobileAccountButton"), $("#footerAccountButton")].forEach((button) => {
       if (button) button.textContent = label;
     });
     $("#signedOutPanel").hidden = loggedIn;
     $("#signedInPanel").hidden = !loggedIn;
     if (loggedIn) {
-      $("#accountName").textContent = `Hello, ${userDisplayName()}`;
-      $("#accountEmail").textContent = state.currentUser.email || "Demo account";
-      $("#adminButton").hidden = !isAdmin();
+      $("#accountName").textContent = guest ? "Hello, Guest" : `Hello, ${userDisplayName()}`;
+      $("#accountEmail").textContent = guest
+        ? "Guest browsing mode. You can browse and save listings, but you need a Google or email account to sell."
+        : (state.currentUser.email || "Signed-in account");
+      $("#dashboardButton").hidden = guest;
+      $("#adminButton").hidden = guest || !isAdmin();
+      $("#guestUpgradeButton").hidden = !guest;
+      $("#logoutButton").textContent = guest ? "Exit guest mode" : "Log out";
     }
+  }
+
+  function clearGuestMode() {
+    state.guestMode = false;
+    sessionStorage.removeItem("du2bao2-guest-mode");
   }
 
   async function initializeAuth() {
     if (!supabaseClient) {
       state.currentUser = getDemoUser();
+      if (state.currentUser) clearGuestMode();
       updateAccountUI();
       return;
     }
 
     const { data } = await supabaseClient.auth.getSession();
     state.currentUser = data.session?.user || null;
+    if (state.currentUser) clearGuestMode();
     updateAccountUI();
 
     supabaseClient.auth.onAuthStateChange((_event, session) => {
       state.currentUser = session?.user || null;
+      if (state.currentUser) clearGuestMode();
       updateAccountUI();
     });
   }
@@ -371,6 +397,50 @@
     setMessage($("#authMessage"));
   }
 
+  function authRedirectUrl() {
+    const localHost = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+    if (localHost) return `${window.location.origin}${window.location.pathname}`;
+    return String(config.SITE_URL || `${window.location.origin}${window.location.pathname}`).replace(/\/$/, "");
+  }
+
+  async function handleGoogleLogin() {
+    const button = $("#googleLoginButton");
+    button.disabled = true;
+    setMessage($("#authMessage"), "Opening Google sign-in…");
+
+    try {
+      if (!supabaseClient) {
+        throw new Error("Connect Supabase and enable the Google provider before using Google login.");
+      }
+      clearGuestMode();
+      const { error } = await supabaseClient.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: authRedirectUrl() }
+      });
+      if (error) throw error;
+    } catch (error) {
+      console.error(error);
+      setMessage($("#authMessage"), error.message || "Google login could not be started.", "error");
+      button.disabled = false;
+    }
+  }
+
+  function handleGuestLogin() {
+    state.currentUser = null;
+    state.guestMode = true;
+    sessionStorage.setItem("du2bao2-guest-mode", "1");
+    updateAccountUI();
+    closeDialog("authDialog");
+    showToast("Browsing as guest");
+  }
+
+  function upgradeGuestAccount() {
+    clearGuestMode();
+    updateAccountUI();
+    setAuthMode("register");
+    setMessage($("#authMessage"), "Create an account or continue with Google to start selling.");
+  }
+
   async function handleAuthSubmit(event) {
     event.preventDefault();
     const form = event.currentTarget;
@@ -383,6 +453,7 @@
     setMessage($("#authMessage"), "Working…");
 
     try {
+      clearGuestMode();
       if (!supabaseClient) {
         state.currentUser = {
           id: `demo-${email}`,
@@ -425,22 +496,37 @@
   }
 
   async function logout() {
-    if (supabaseClient) await supabaseClient.auth.signOut();
+    const wasGuest = isGuestUser();
+    if (wasGuest && state.currentUser?.is_anonymous && supabaseClient) {
+      await supabaseClient.auth.signOut();
+    } else if (!wasGuest && supabaseClient) {
+      await supabaseClient.auth.signOut();
+    }
+    clearGuestMode();
     localStorage.removeItem("du2bao2-demo-user");
     state.currentUser = null;
     updateAccountUI();
     closeDialog("authDialog");
-    showToast("Logged out");
+    showToast(wasGuest ? "Guest mode closed" : "Logged out");
   }
 
   function requireAccount(action) {
-    if (state.currentUser) {
+    if (state.currentUser && !isGuestUser()) {
       action();
+      return;
+    }
+    if (isGuestUser()) {
+      clearGuestMode();
+      updateAccountUI();
+      setAuthMode("register");
+      setMessage($("#authMessage"), "Guest mode is for browsing only. Create an account or continue with Google to sell.");
+      openDialog("authDialog");
+      showToast("A full account is required to sell");
       return;
     }
     setAuthMode("login");
     openDialog("authDialog");
-    showToast("Log in or register first");
+    showToast("Log in, use Google, or continue as guest");
   }
 
   function validatePhotos(files) {
@@ -729,8 +815,11 @@
 
     $$(".sell-trigger").forEach((button) => button.addEventListener("click", openSellForm));
     $$(".wishlist-trigger").forEach((button) => button.addEventListener("click", openWishlist));
-    [$("#accountButton"), $("#mobileAccountButton"), $("#footerAccountButton"), $("#bottomAccountButton")].forEach((button) => button?.addEventListener("click", openAccount));
+    [$("#accountButton"), $("#mobileAccountButton"), $("#footerAccountButton")].forEach((button) => button?.addEventListener("click", openAccount));
 
+    $("#googleLoginButton").addEventListener("click", handleGoogleLogin);
+    $("#guestLoginButton").addEventListener("click", handleGuestLogin);
+    $("#guestUpgradeButton").addEventListener("click", upgradeGuestAccount);
     $("#loginTab").addEventListener("click", () => setAuthMode("login"));
     $("#registerTab").addEventListener("click", () => setAuthMode("register"));
     $("#authForm").addEventListener("submit", handleAuthSubmit);
