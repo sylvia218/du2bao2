@@ -32,7 +32,7 @@
       condition: row.condition || "Good",
       location: row.location || "Malaysia",
       description: row.description || "",
-      badge: row.badge || "Admin reviewed",
+      badge: row.badge || "Listing reviewed",
       status: row.status || "pending",
       visual: row.visual || (row.brand || "DU").slice(0, 2).toUpperCase(),
       seller_name: profile?.display_name || row.seller_name || "DU2BAO2 Seller",
@@ -98,16 +98,17 @@
       <div class="detail-copy">
         <span class="brand-name">${escapeHTML(product.brand)}</span>
         <h1>${escapeHTML(product.title)}</h1>
-        <span class="badge" style="position:static;display:inline-flex">${escapeHTML(product.badge || "Approved")}</span>
+        <span class="badge" style="position:static;display:inline-flex">${escapeHTML(product.badge || "Listing reviewed")}</span>
         <div class="detail-price">${money.format(product.price)}</div>
         <div class="detail-meta">
           <div><strong>${escapeHTML(product.condition)}</strong><span>Condition</span></div>
           <div><strong>${escapeHTML(product.category)}</strong><span>Category</span></div>
           <div><strong>${escapeHTML(product.location)}</strong><span>Location</span></div>
-          <div><strong>${product.seller_verified ? "Verified seller" : "Registered seller"}</strong><span>Seller status</span></div>
+          <div><strong>Registered seller</strong><span>Seller profile</span></div>
         </div>
         <p class="detail-description">${escapeHTML(product.description || "No additional description was provided.")}</p>
-        <div class="seller-box"><strong>${escapeHTML(product.seller_name || "DU2BAO2 Seller")}${product.seller_verified ? " ✓" : ""}</strong><span>Contact the seller to confirm availability, payment and delivery arrangements.</span></div>
+        <div class="seller-box"><strong>${escapeHTML(product.seller_name || "DU2BAO2 Seller")}</strong><span>Contact the seller to confirm availability, item details, payment and delivery arrangements.</span></div>
+        <div class="listing-disclaimer">Information on this page is supplied by the seller. Confirm condition, authenticity and other important details before completing a transaction.</div>
         <div class="detail-actions">
           ${contactLink(product)}
           <button class="secondary-btn" id="saveProductButton">${saved ? "♥ Saved to wishlist" : "♡ Save to wishlist"}</button>
@@ -154,7 +155,7 @@
     const image = product.images?.[0]
       ? `<img src="${escapeHTML(product.images[0])}" alt="${escapeHTML(product.title)}" loading="lazy" />`
       : `<div class="visual">${escapeHTML(product.visual || product.brand.slice(0, 2))}</div>`;
-    return `<article class="product-card"><a class="product-link" href="product.html?id=${encodeURIComponent(product.id)}"><div class="product-image"><span class="badge">${escapeHTML(product.badge || "Approved")}</span>${image}</div><div class="product-copy"><span class="brand-name">${escapeHTML(product.brand)}</span><h3>${escapeHTML(product.title)}</h3><div class="price-line"><span class="price">${money.format(product.price)}</span><span class="condition">${escapeHTML(product.condition)}</span></div></div></a></article>`;
+    return `<article class="product-card"><a class="product-link" href="product.html?id=${encodeURIComponent(product.id)}"><div class="product-image"><span class="badge">${escapeHTML(product.badge || "Listing reviewed")}</span>${image}</div><div class="product-copy"><span class="brand-name">${escapeHTML(product.brand)}</span><h3>${escapeHTML(product.title)}</h3><div class="price-line"><span class="price">${money.format(product.price)}</span><span class="condition">${escapeHTML(product.condition)}</span></div></div></a></article>`;
   }
 
   function renderRelated() {

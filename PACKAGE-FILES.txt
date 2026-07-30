@@ -1,6 +1,14 @@
 CNAME
 INSTALL-FOOTER-UPGRADE.md
+INSTALL-GOOGLE-GUEST-LOGIN.md
+PACKAGE-FILES.txt
 README.md
+UPLOAD-INSTRUCTIONS.txt
+assets/camera.svg
+assets/laptop.svg
+assets/luxury-bag.svg
+assets/watch.svg
+config.example.js
 config.js
 contact.html
 data.js
@@ -19,5 +27,6 @@ seller-rules.html
 service-worker.js
 shipping.html
 styles.css
+supabase-google-profile-upgrade.sql
 supabase-setup.sql
 terms.html

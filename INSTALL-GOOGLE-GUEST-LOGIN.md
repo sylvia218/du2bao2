@@ -63,4 +63,4 @@ After GitHub Pages redeploys, hard-refresh:
 - Mac: Command + Shift + R
 - Windows: Ctrl + Shift + R
 
-The service-worker cache is now `du2bao2-v5-google-guest-login`.
+The service-worker cache is now `du2bao2-v6-premium-marketplace`.

@@ -1,9 +1,8 @@
 # DU2BAO2
 
-> Update: Added Continue with Google and Continue as guest. Guest mode is browse-only, while Google or email accounts can sell and access the seller dashboard. The service-worker cache version was refreshed.
+> Version 6 redesign: refined into a modern premium-focused pre-owned marketplace while keeping the existing legal pages, Supabase listings, seller dashboard, admin approval, guest browsing, email login and Continue with Google.
 
-This is a responsive GitHub Pages website for buying and selling pre-owned products. It works on phones, tablets and desktop browsers from one set of source files.
-
+The homepage focuses on luxury bags, watches, cameras, technology and selected lifestyle items without advertising escrow, guaranteed authenticity or buyer protection as active services. Four local SVG illustrations are included, so the sample design does not rely on third-party image links.
 ## Categories included
 
 - Luxury Bags
@@ -16,7 +15,7 @@ This is a responsive GitHub Pages website for buying and selling pre-owned produ
 
 ## What is included
 
-- Professional responsive homepage
+- Refined premium-focused responsive homepage
 - Two-column mobile product grid and four-column desktop grid
 - Search, category filtering, condition filtering and price sorting
 - Individual shareable product pages
@@ -24,7 +23,7 @@ This is a responsive GitHub Pages website for buying and selling pre-owned produ
 - Supabase email registration and login
 - Continue with Google login
 - Browse-only guest mode without creating a seller account
-- Seller listing form with up to six photos
+- Seller listing form with up to eight photos
 - Supabase Storage image uploads
 - Seller profile name and WhatsApp number
 - Seller dashboard with pending, approved, rejected and sold status
@@ -34,6 +33,12 @@ This is a responsive GitHub Pages website for buying and selling pre-owned produ
 - Installable web-app manifest and service worker
 - `CNAME` file for `du2bao2.com`
 - Supabase database, security policy and storage setup SQL
+
+## Important before replacing the repository
+
+The `config.js` inside the ZIP supplied for this redesign contained blank Supabase values. The Google, guest and email login code is preserved, but Google and real database login require your working Supabase URL and anon key.
+
+Before uploading the complete package, copy the values from your current working GitHub `config.js` into this package's `config.js`. Do not copy any Supabase service-role key or Google Client Secret into GitHub.
 
 ## Files to upload to GitHub
 
@@ -50,6 +55,7 @@ Upload **every file in this folder** to the root of the same GitHub repository:
 - `manifest.webmanifest`
 - `service-worker.js`
 - `favicon.svg`
+- `assets/` folder with four local illustrations
 - `CNAME`
 - `README.md`
 

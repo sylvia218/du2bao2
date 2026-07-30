@@ -1,10 +1,10 @@
 {
   "name": "DU2BAO2 Marketplace",
   "short_name": "DU2BAO2",
-  "description": "Responsive pre-owned marketplace for Malaysia.",
+  "description": "Premium-focused pre-owned marketplace for Malaysia.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#fffdf9",
+  "background_color": "#fcfbf8",
   "theme_color": "#17130f",
   "icons": [
     {

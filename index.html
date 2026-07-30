@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#17130f" />
-  <meta name="description" content="DU2BAO2 — Malaysia's marketplace for pre-owned luxury, technology, jewelry, accessories and more." />
-  <title>DU2BAO2 | Pre-Owned Marketplace</title>
+  <meta name="description" content="DU2BAO2 — a marketplace for premium pre-owned bags, watches, cameras, technology and selected lifestyle goods in Malaysia." />
+  <title>DU2BAO2 | Premium Pre-Owned Marketplace</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=5" />
+  <link rel="stylesheet" href="styles.css?v=6" />
 </head>
 <body>
   <a class="skip-link" href="#browse">Skip to listings</a>
@@ -47,51 +47,85 @@
   <div class="drawer-overlay" id="drawerOverlay" hidden></div>
 
   <main>
-    <section class="hero">
+    <section class="hero marketplace-hero">
       <div class="hero-copy">
-        <span class="eyebrow">PRE-OWNED. TRUSTED. REMARKABLE.</span>
-        <h1>Great finds deserve a<br /><em>second story.</em></h1>
-        <p>Discover pre-owned luxury bags, watches, fashion, technology, jewelry, accessories and unique miscellaneous finds from sellers across Malaysia.</p>
+        <span class="eyebrow">PREMIUM PRE-OWNED GOODS</span>
+        <h1>Premium Pre-Owned<br /><em>Marketplace</em></h1>
+        <p>Buy and sell luxury bags, watches, cameras, technology and selected lifestyle pieces from sellers across Malaysia.</p>
         <div class="hero-actions">
-          <a class="primary-btn large" href="#browse">Start browsing</a>
-          <button class="secondary-btn large sell-trigger">Start selling</button>
+          <a class="primary-btn large" href="#browse">Browse listings</a>
+          <button class="secondary-btn large sell-trigger">Sell an item</button>
         </div>
-        <div class="trust-row">
-          <span>✓ Admin-reviewed listings</span>
-          <span>✓ Seller profiles</span>
-          <span>✓ Direct WhatsApp contact</span>
+        <div class="hero-notes" aria-label="Marketplace features">
+          <span>Actual-item photos</span>
+          <span>Seller profiles</span>
+          <span>Direct contact</span>
+        </div>
+        <div class="quick-search" aria-label="Popular searches">
+          <span>Popular:</span>
+          <button type="button" data-quick-search="Louis Vuitton">Louis Vuitton</button>
+          <button type="button" data-quick-search="Rolex">Rolex</button>
+          <button type="button" data-quick-search="Sony">Sony</button>
+          <button type="button" data-quick-search="Apple">Apple</button>
         </div>
       </div>
 
-      <div class="hero-showcase" aria-label="Featured marketplace categories">
-        <div class="showcase-glow"></div>
-        <article class="showcase-card main-card">
-          <span class="mini-label">FEATURED CATEGORY</span>
-          <div class="showcase-icon">DU2</div>
-          <strong>Luxury Bags</strong>
-          <small>Curated pre-owned pieces</small>
-        </article>
-        <article class="showcase-card small-card top-card"><span>⌘</span><strong>Technology</strong></article>
-        <article class="showcase-card small-card bottom-card"><span>◇</span><strong>Jewelry</strong></article>
+      <div class="hero-collage" aria-label="Luxury bag, watch, camera and technology categories">
+        <figure class="collage-item collage-bag">
+          <img src="assets/luxury-bag.svg" alt="Illustration of a premium handbag" />
+          <figcaption>Luxury Bags</figcaption>
+        </figure>
+        <figure class="collage-item collage-watch">
+          <img src="assets/watch.svg" alt="Illustration of a premium watch" />
+          <figcaption>Watches</figcaption>
+        </figure>
+        <figure class="collage-item collage-camera">
+          <img src="assets/camera.svg" alt="Illustration of a mirrorless camera" />
+          <figcaption>Cameras</figcaption>
+        </figure>
+        <figure class="collage-item collage-tech">
+          <img src="assets/laptop.svg" alt="Illustration of a premium laptop" />
+          <figcaption>Technology</figcaption>
+        </figure>
       </div>
     </section>
 
-    <section class="category-section" aria-labelledby="categoryHeading">
+    <section class="category-section" id="categories" aria-labelledby="categoryHeading">
       <div class="category-header">
         <div>
-          <span class="eyebrow">SHOP YOUR WAY</span>
+          <span class="eyebrow">EXPLORE THE MARKETPLACE</span>
           <h2 id="categoryHeading">Browse by category</h2>
         </div>
-        <p>Swipe sideways on mobile to see every category.</p>
+        <p>Premium-focused, without limiting the marketplace to only one type of item.</p>
       </div>
+
+      <div class="visual-category-grid">
+        <button class="visual-category-card" type="button" data-category-jump="Luxury Bags">
+          <img src="assets/luxury-bag.svg" alt="" />
+          <span><strong>Luxury Bags</strong><small>Handbags and small leather goods</small></span>
+        </button>
+        <button class="visual-category-card" type="button" data-category-jump="Watches">
+          <img src="assets/watch.svg" alt="" />
+          <span><strong>Watches</strong><small>Premium and collectible timepieces</small></span>
+        </button>
+        <button class="visual-category-card" type="button" data-category-jump="Technology">
+          <img src="assets/camera.svg" alt="" />
+          <span><strong>Cameras &amp; Technology</strong><small>Cameras, lenses, computers and devices</small></span>
+        </button>
+        <button class="visual-category-card" type="button" data-category-jump="Jewelry">
+          <img src="assets/laptop.svg" alt="" />
+          <span><strong>Selected Lifestyle</strong><small>Jewelry, accessories, fashion and more</small></span>
+        </button>
+      </div>
+
       <div class="categories" id="categoryButtons" aria-label="Product categories"></div>
     </section>
 
     <section class="marketplace" id="browse">
       <div class="section-heading">
         <div>
-          <span class="eyebrow">LATEST LISTINGS</span>
-          <h2>Fresh marketplace finds</h2>
+          <span class="eyebrow">RECENT LISTINGS</span>
+          <h2>Explore what is available</h2>
           <p class="section-subtitle" id="listingSummary">Loading approved listings…</p>
         </div>
 
@@ -131,37 +165,38 @@
 
     <section class="how-it-works" id="how-it-works">
       <div class="section-heading centered">
-        <span class="eyebrow">SIMPLE AND CLEAR</span>
-        <h2>Sell in three steps</h2>
-        <p>New listings appear in your seller dashboard immediately and go public after admin approval.</p>
+        <span class="eyebrow">STRAIGHTFORWARD SELLING</span>
+        <h2>List, review and connect</h2>
+        <p>A simple marketplace flow for sellers and interested buyers.</p>
       </div>
       <div class="steps">
-        <article><span>01</span><h3>Create your listing</h3><p>Add multiple photos, item details, condition, location and asking price.</p></article>
-        <article><span>02</span><h3>Wait for review</h3><p>An admin checks the listing information before approving it for the public marketplace.</p></article>
-        <article><span>03</span><h3>Talk to buyers</h3><p>Interested buyers can open the product page and contact the seller through WhatsApp.</p></article>
+        <article><span>01</span><h3>Create a listing</h3><p>Add clear product photos, the asking price, condition and the details a buyer may need.</p></article>
+        <article><span>02</span><h3>Listing review</h3><p>New listings remain in the seller dashboard while an admin reviews them before publication.</p></article>
+        <article><span>03</span><h3>Connect directly</h3><p>Buyers can view the product page and contact the seller to discuss the item and transaction.</p></article>
       </div>
     </section>
 
-    <section class="feature-grid-section">
+    <section class="feature-grid-section" id="about">
       <div class="section-heading centered">
-        <span class="eyebrow">BUILT FOR BUYERS AND SELLERS</span>
-        <h2>Everything in one marketplace</h2>
+        <span class="eyebrow">THE DU2BAO2 EXPERIENCE</span>
+        <h2>A smoother premium marketplace</h2>
+        <p>Premium-focused, practical and easy to understand—without making promises beyond the services currently available.</p>
       </div>
       <div class="feature-grid">
-        <article><span>♡</span><h3>Wishlist</h3><p>Save products on any device browser and return to them later.</p></article>
-        <article><span>◎</span><h3>Seller dashboard</h3><p>Track pending, approved, rejected and sold listings.</p></article>
-        <article><span>✓</span><h3>Admin controls</h3><p>Approve or reject new listings before they appear publicly.</p></article>
-        <article><span>↗</span><h3>Shareable details</h3><p>Every product has an individual page that can be shared with buyers.</p></article>
+        <article><span>◇</span><h3>Premium focus</h3><p>Browse bags, watches, cameras, technology, jewelry, fashion, accessories and selected items.</p></article>
+        <article><span>▤</span><h3>Useful listing details</h3><p>Photos, condition, price, location and descriptions are presented in a consistent layout.</p></article>
+        <article><span>♡</span><h3>Save favourites</h3><p>Keep interesting products in your browser wishlist and return to them later.</p></article>
+        <article><span>◎</span><h3>Seller tools</h3><p>Registered sellers can submit listings and track pending, approved, rejected and sold items.</p></article>
       </div>
     </section>
 
-    <section class="trust-banner" id="trust">
+    <section class="trust-banner marketplace-note" id="trust">
       <div>
-        <span class="eyebrow light">THE DU2BAO2 APPROACH</span>
-        <h2>Clear listings. Better confidence.</h2>
-        <p>DU2BAO2 provides an approval workflow, seller identity through user accounts, visible item condition and direct seller contact. Payment, delivery, authentication and buyer-protection services must be added before presenting them as active services.</p>
+        <span class="eyebrow light">IMPORTANT MARKETPLACE INFORMATION</span>
+        <h2>Review the details before you deal.</h2>
+        <p>Product information is provided by sellers. Buyers should confirm important details, condition, authenticity, payment and delivery arrangements before completing a transaction.</p>
       </div>
-      <div class="trust-stat"><strong>7</strong><span>marketplace categories, built for phone and desktop browsing</span></div>
+      <div class="trust-stat"><strong>7</strong><span>categories with a premium focus and room for selected additional items</span></div>
     </section>
   </main>
 
@@ -234,10 +269,11 @@
         <label>WhatsApp number<input name="seller_whatsapp" inputmode="tel" maxlength="20" placeholder="e.g. 60123456789" /></label>
       </div>
 
-      <label>Description<textarea name="description" required maxlength="2000" placeholder="Describe condition, inclusions, age, defects and signs of use."></textarea></label>
+      <label>Description<textarea name="description" required maxlength="2000" placeholder="Describe the condition, included items, purchase history when known, defects and signs of use."></textarea></label>
+      <div class="listing-tip"><strong>Helpful listing:</strong> use actual-item photos and clearly mention wear, defects, missing accessories and any information the buyer should confirm.</div>
       <label class="upload-box">Product photos
         <input id="photoInput" name="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple />
-        <span>Upload up to 6 clear JPG, PNG or WebP photos. Maximum 5 MB each.</span>
+        <span>Upload up to 8 clear JPG, PNG or WebP photos. Maximum 5 MB each.</span>
       </label>
       <div class="photo-preview" id="photoPreview"></div>
       <button class="primary-btn submit-btn" id="submitListingButton" type="submit">Submit for approval</button>
@@ -327,8 +363,8 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js?v=5"></script>
-  <script src="data.js?v=5"></script>
-  <script src="script.js?v=5"></script>
+  <script src="config.js?v=6"></script>
+  <script src="data.js?v=6"></script>
+  <script src="script.js?v=6"></script>
 </body>
 </html>

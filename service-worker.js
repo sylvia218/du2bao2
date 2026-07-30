@@ -1,4 +1,4 @@
-const CACHE_NAME = "du2bao2-v5-google-guest-login";
+const CACHE_NAME = "du2bao2-v6-premium-marketplace";
 const LOCAL_FILES = [
   "./",
   "./index.html",
@@ -18,7 +18,11 @@ const LOCAL_FILES = [
   "./data.js",
   "./config.js",
   "./manifest.webmanifest",
-  "./favicon.svg"
+  "./favicon.svg",
+  "./assets/luxury-bag.svg",
+  "./assets/watch.svg",
+  "./assets/camera.svg",
+  "./assets/laptop.svg",
 ];
 
 self.addEventListener("install", (event) => {

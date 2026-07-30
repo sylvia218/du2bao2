@@ -131,7 +131,7 @@
       condition: row.condition || "Good",
       location: row.location || "Malaysia",
       description: row.description || "",
-      badge: row.badge || "Admin reviewed",
+      badge: row.badge || "Listing reviewed",
       status: row.status || "pending",
       visual: row.visual || (row.brand || "DU").slice(0, 2).toUpperCase(),
       created_at: row.created_at || new Date().toISOString(),
@@ -203,7 +203,7 @@
     productGrid.hidden = false;
 
     const items = filteredProducts();
-    listingSummary.textContent = `${items.length} approved listing${items.length === 1 ? "" : "s"} shown`;
+    listingSummary.textContent = `${items.length} listing${items.length === 1 ? "" : "s"} shown`;
     productGrid.innerHTML = items.map((product) => {
       const saved = state.wishlist.has(String(product.id));
       const detailUrl = `product.html?id=${encodeURIComponent(product.id)}`;
@@ -243,19 +243,42 @@
       Accessories: "⌁",
       Miscellaneous: "✧"
     };
+    const labels = {
+      Technology: "Cameras & Technology",
+      Miscellaneous: "Other Premium Goods"
+    };
 
     $("#categoryButtons").innerHTML = ["All", ...categories].map((category) => `
       <button class="category ${category === "All" ? "active" : ""}" data-category="${escapeHTML(category)}">
-        <span>${icons[category] || "•"}</span>${escapeHTML(category)}
+        <span>${icons[category] || "•"}</span>${escapeHTML(labels[category] || category)}
       </button>`).join("");
 
-    $("#sellCategory").innerHTML = categories.map((category) => `<option>${escapeHTML(category)}</option>`).join("");
+    $("#sellCategory").innerHTML = categories.map((category) => `<option value="${escapeHTML(category)}">${escapeHTML(labels[category] || category)}</option>`).join("");
 
     $$(".category").forEach((button) => button.addEventListener("click", () => {
-      $$(".category").forEach((item) => item.classList.remove("active"));
-      button.classList.add("active");
-      state.activeCategory = button.dataset.category;
-      renderProducts();
+      setActiveCategory(button.dataset.category);
+    }));
+  }
+
+  function setActiveCategory(category, query = "") {
+    state.activeCategory = category || "All";
+    $$(".category").forEach((button) => button.classList.toggle("active", button.dataset.category === state.activeCategory));
+    if (query) searchInput.value = query;
+    renderProducts();
+  }
+
+  function setupMarketplaceShortcuts() {
+    $$('[data-quick-search]').forEach((button) => button.addEventListener("click", () => {
+      searchInput.value = button.dataset.quickSearch || "";
+      setActiveCategory("All");
+      document.querySelector("#browse")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      searchInput.focus({ preventScroll: true });
+    }));
+
+    $$('[data-category-jump]').forEach((button) => button.addEventListener("click", () => {
+      searchInput.value = button.dataset.categorySearch || "";
+      setActiveCategory(button.dataset.categoryJump || "All");
+      document.querySelector("#browse")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }));
   }
 
@@ -343,7 +366,7 @@
     const guest = isGuestUser();
     const loggedIn = Boolean(state.currentUser) || guest;
     const label = guest ? "Guest" : (loggedIn ? userDisplayName() : "Log in");
-    [$("#accountButton"), $("#mobileAccountButton"), $("#footerAccountButton")].forEach((button) => {
+    [$("#accountButton"), $("#mobileAccountButton"), $("#footerAccountButton"), $("#bottomAccountButton")].forEach((button) => {
       if (button) button.textContent = label;
     });
     $("#signedOutPanel").hidden = loggedIn;
@@ -530,7 +553,7 @@
   }
 
   function validatePhotos(files) {
-    if (files.length > 6) return "Please choose no more than 6 photos.";
+    if (files.length > 8) return "Please choose no more than 8 photos.";
     const allowed = ["image/jpeg", "image/png", "image/webp"];
     for (const file of files) {
       if (!allowed.includes(file.type)) return "Only JPG, PNG and WebP photos are accepted.";
@@ -741,7 +764,7 @@
         const target = listings.find((item) => String(item.id) === String(id));
         if (target) {
           target.status = status;
-          target.badge = status === "approved" ? "Admin reviewed" : "Rejected";
+          target.badge = status === "approved" ? "Listing reviewed" : "Rejected";
         }
         saveDemoListings(listings);
       } else {
@@ -815,7 +838,7 @@
 
     $$(".sell-trigger").forEach((button) => button.addEventListener("click", openSellForm));
     $$(".wishlist-trigger").forEach((button) => button.addEventListener("click", openWishlist));
-    [$("#accountButton"), $("#mobileAccountButton"), $("#footerAccountButton")].forEach((button) => button?.addEventListener("click", openAccount));
+    [$("#accountButton"), $("#mobileAccountButton"), $("#footerAccountButton"), $("#bottomAccountButton")].forEach((button) => button?.addEventListener("click", openAccount));
 
     $("#googleLoginButton").addEventListener("click", handleGoogleLogin);
     $("#guestLoginButton").addEventListener("click", handleGuestLogin);
@@ -843,6 +866,7 @@
 
   async function init() {
     renderCategories();
+    setupMarketplaceShortcuts();
     updateWishlistUI();
     setupDialogControls();
     setupDrawer();
