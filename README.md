@@ -1,315 +1,214 @@
-# DU2BAO2
+# DU2BAO2 V7
 
-> Version 6 redesign: refined into a modern premium-focused pre-owned marketplace while keeping the existing legal pages, Supabase listings, seller dashboard, admin approval, guest browsing, email login and Continue with Google.
+DU2BAO2 is a responsive marketplace for quality pre-owned goods. This version keeps the existing GitHub Pages and Supabase architecture while adding the seller disclosure, complaint and buyer–seller contact workflows required for the next launch stage.
 
-The homepage focuses on luxury bags, watches, cameras, technology and selected lifestyle items without advertising escrow, guaranteed authenticity or buyer protection as active services. Four local SVG illustrations are included, so the sample design does not rely on third-party image links.
-## Categories included
+## Included marketplace features
 
-- Luxury Bags
-- Watches
-- Fashion
-- Technology
-- Jewelry
-- Accessories
-- Miscellaneous
+- Clean quality-focused homepage and category browsing
+- Search, condition filters and sorting
+- Product details and related listings
+- Browser wishlist
+- Continue with Google
+- Email registration and login
+- Continue as guest for browsing and saving
+- Seller dashboard with pending, approved, rejected and sold states
+- Admin approval for new listings
+- Up to eight listing photographs
+- Privacy, Terms, Safety, Shipping, Returns, Prohibited Items, Seller Rules, Marketplace Role and Contact pages
 
-## What is included
+## New in V7
 
-- Refined premium-focused responsive homepage
-- Two-column mobile product grid and four-column desktop grid
-- Search, category filtering, condition filtering and price sorting
-- Individual shareable product pages
-- Wishlist saved in the visitor's browser
-- Supabase email registration and login
-- Continue with Google login
-- Browse-only guest mode without creating a seller account
-- Seller listing form with up to eight photos
-- Supabase Storage image uploads
-- Seller profile name and WhatsApp number
-- Seller dashboard with pending, approved, rejected and sold status
-- Admin approval and rejection controls
-- Approved-only public listings
-- Loading, empty and error states
-- Installable web-app manifest and service worker
-- `CNAME` file for `du2bao2.com`
-- Supabase database, security policy and storage setup SQL
+### Seller disclosure and restricted records
 
-## Important before replacing the repository
+Before listing, a seller completes:
 
-The `config.js` inside the ZIP supplied for this redesign contained blank Supabase values. The Google, guest and email login code is preserved, but Google and real database login require your working Supabase URL and anon key.
+**Displayed on approved listings**
 
-Before uploading the complete package, copy the values from your current working GitHub `config.js` into this package's `config.js`. Do not copy any Supabase service-role key or Google Client Secret into GitHub.
+- Seller or business name
+- Individual or business seller type
+- Public email
+- Public telephone / WhatsApp
+- Business or service address
+- Website and business name, where applicable
 
-## Files to upload to GitHub
+**Restricted to the seller and authorised administrators**
 
-Upload **every file in this folder** to the root of the same GitHub repository:
+- Legal name
+- Private telephone number
+- State and country
+- Business registration number, where supplied
+- Optional last four characters of an identity reference
+- Seller declaration and timestamp
 
-- `index.html`
-- `product.html`
-- `styles.css`
-- `script.js`
-- `product.js`
-- `data.js`
-- `config.js`
-- `supabase-setup.sql`
-- `manifest.webmanifest`
-- `service-worker.js`
-- `favicon.svg`
-- `assets/` folder with four local illustrations
-- `CNAME`
-- `README.md`
+The normal form does not request a full MyKad or passport image. A future identity-document workflow should use a purpose-built secure verification provider or restricted private storage after legal and security review.
 
-Do not upload only `index.html`. The website needs the other files beside it.
+### Bahasa Malaysia listing disclosures
 
-## Part 1 — Test the design first
+The listing form now requests the main:
 
-Before Supabase is connected, the website opens in **Setup mode** with sample products. Accounts, listing submissions and approvals are simulated in that browser using `localStorage`.
+- Product title
+- Description
+- Payment methods
+- Delivery or handover estimate
+- Sale terms
 
-This lets you check the design immediately, but the sample-mode data is not shared between devices.
+in Bahasa Malaysia. The seller may add an English title and description.
 
-## Part 2 — Create the Supabase database
+### Guided contact workflow
 
-1. Open your Supabase project.
-2. Choose **SQL Editor**.
-3. Open `supabase-setup.sql` from this folder.
-4. Copy the entire SQL file into Supabase SQL Editor.
-5. Click **Run**.
+The product page provides a contact window with:
 
-The SQL creates:
+- Ask a question
+- Check availability
+- Make an offer
 
-- `profiles`
-- `admins`
-- `listings`
-- `listing_images`
-- `favorites`
-- A public `listing-images` Storage bucket
-- Row Level Security policies
-- Automatic user-profile creation
+The selected option prepares a WhatsApp message with the product and listing link. The current website does not record the WhatsApp conversation or confirm that a transaction was completed.
 
-## Part 3 — Connect the website to Supabase
+### Listing report workflow
 
-In Supabase:
+Every product page includes **Report this listing**. A reporter can select:
 
-1. Open **Project Settings → API**.
-2. Copy the **Project URL**.
-3. Copy the **anon public key**.
+- Suspected counterfeit or authenticity concern
+- Misleading information
+- Prohibited or unsafe item
+- Scam or payment concern
+- Seller conduct
+- Other
 
-Open `config.js` and replace the empty values:
+The report stores the listing snapshot, reporter contact, reason, details, optional evidence link and status. Administrators can mark reports as open, reviewing, resolved or dismissed.
+
+### Administrator centre
+
+Administrators have three tabs:
+
+1. Pending listings
+2. Reports
+3. Restricted seller records
+
+Database access is protected using Supabase Row Level Security. Front-end hiding alone is not treated as security.
+
+### Record review dates
+
+Seller private records, reports and listing audit entries receive a three-year retention review date. This is not an automatic deletion job. Establish a documented retention, preservation and secure-deletion procedure before launch.
+
+## Important current marketplace wording
+
+DU2BAO2 helps buyers and sellers connect, communicate and arrange transactions using the options currently available on the platform.
+
+DU2BAO2 does not currently hold buyer funds, provide escrow services, arrange delivery or independently authenticate listed items. Supported payments, escrow, delivery, third-party authentication or buyer-protection services may be introduced later under separate applicable terms.
+
+Do not advertise a future service as active until the technical system, provider, customer support procedure, fees and legal terms are ready.
+
+# Upgrade an existing DU2BAO2 Supabase project
+
+## 1. Back up first
+
+In Supabase, review and export important production data before changing the schema.
+
+## 2. Run the V7 migration
+
+1. Open the Supabase Dashboard.
+2. Select the DU2BAO2 project.
+3. Open **SQL Editor**.
+4. Open `supabase-v7-upgrade.sql` from this package.
+5. Copy the entire file into a new query.
+6. Select **Run**.
+
+This adds the new profile fields, restricted seller table, listing disclosure fields, reports table, listing audit trail, indexes, triggers and Row Level Security policies.
+
+For a completely new Supabase project, run `supabase-setup.sql` instead. It contains the original setup followed by the V7 upgrade.
+
+## 3. Confirm the administrator account
+
+After creating your own account, run this in Supabase SQL Editor with your real email:
+
+```sql
+insert into public.admins (user_id)
+select id from auth.users where email = 'your-admin-email@example.com'
+on conflict (user_id) do nothing;
+```
+
+The `ADMIN_EMAILS` setting in `config.js` is a convenience fallback. The `public.admins` database table and Row Level Security are the actual protection for restricted records.
+
+# Preserve Google and guest login
+
+The recommended GitHub upload ZIP excludes `config.js`. This prevents the blank example configuration from overwriting your working Supabase URL, anon key, admin email and WhatsApp number.
+
+Your existing repository must retain a working `config.js` similar to:
 
 ```js
 window.DU2BAO2_CONFIG = {
-  SUPABASE_URL: "https://YOUR-PROJECT.supabase.co",
-  SUPABASE_ANON_KEY: "YOUR-ANON-PUBLIC-KEY",
-  ADMIN_EMAILS: ["your-real-email@example.com"],
+  SUPABASE_URL: "YOUR_SUPABASE_PROJECT_URL",
+  SUPABASE_ANON_KEY: "YOUR_SUPABASE_ANON_KEY",
+  ADMIN_EMAILS: ["YOUR_ADMIN_EMAIL"],
   WHATSAPP_NUMBER: "60123456789",
   SITE_URL: "https://du2bao2.com"
 };
 ```
 
-Important:
+Never put the Supabase service-role key in `config.js`, GitHub or browser code.
 
-- The anon public key is intended for browser use.
-- Never put the Supabase **service role key** in GitHub or `config.js`.
-- Use the country code in WhatsApp numbers, without `+`, spaces or dashes. Malaysian numbers normally begin with `60`.
+For Google login, keep your production domain and local test URL in Supabase **Authentication → URL Configuration**, and keep the Supabase callback URL configured in Google Cloud.
 
-## Part 4 — Configure Supabase authentication
+# Upload to GitHub
 
-In Supabase:
+1. Extract the recommended safe-upload ZIP.
+2. Open your existing GitHub repository.
+3. Upload all extracted files and the complete `assets` folder to the repository root.
+4. Choose to replace files with the same names.
+5. Do not delete or replace your working `config.js`.
+6. Commit the changes.
+7. Wait for GitHub Pages to redeploy.
+8. Hard-refresh the website with **Command + Shift + R** on Mac or **Ctrl + Shift + R** on Windows.
 
-1. Open **Authentication → URL Configuration**.
-2. Set the Site URL to:
+Run `supabase-v7-upgrade.sql` before testing seller details, new listings, reports or the new admin tabs.
 
-```text
-https://du2bao2.com
-```
+# Testing checklist
 
-3. Add these Redirect URLs while setting up:
+## Visitor and buyer
 
-```text
-https://du2bao2.com/**
-https://sylvia218.github.io/**
-http://localhost:8000/**
-```
+- Browse as guest
+- Save and remove a wishlist item
+- Open a product
+- Open Contact seller
+- Test question, availability and offer choices
+- Submit a test report
 
-4. Under **Authentication → Providers → Email**, keep Email enabled.
-5. Decide whether users must confirm their email before logging in.
+## Seller
 
-### Enable Google login
+- Log in with Google or email
+- Complete Seller details
+- Confirm public and restricted fields are clearly separated
+- Submit a listing with two to eight photos
+- Confirm the listing appears as pending in Seller dashboard
 
-1. In Supabase, open **Authentication → Sign In / Providers → Google**.
-2. Leave this page open and copy the callback URL shown by Supabase. It normally looks like:
+## Administrator
 
-```text
-https://YOUR-PROJECT-REF.supabase.co/auth/v1/callback
-```
+- Confirm your user is in `public.admins`
+- Open Admin centre
+- Approve or reject a pending listing
+- Review a submitted report and update its status
+- Confirm restricted seller records are visible only to an administrator and the record owner
 
-3. In Google Auth Platform, create an **OAuth client ID** with application type **Web application**.
-4. Add these authorised JavaScript origins:
+## Security
 
-```text
-https://du2bao2.com
-https://www.du2bao2.com
-http://localhost:8000
-```
+- Confirm an ordinary user cannot read another seller’s row in `seller_private_profiles`
+- Confirm an ordinary user cannot view all reports
+- Confirm an ordinary user cannot open the restricted admin data through direct Supabase requests
+- Confirm the Supabase service-role key is not present anywhere in the website files
 
-5. Add the exact Supabase callback URL from step 2 as an authorised redirect URI.
-6. Copy the Google Client ID and Client Secret into the Google provider page in Supabase, then enable and save the provider.
-7. Confirm that Supabase **Authentication → URL Configuration** includes your production and local redirect URLs.
+# Files
 
-The website button uses Supabase OAuth. Do not place the Google Client Secret in `config.js` or GitHub.
+- `index.html` — homepage, authentication, listing, seller details and admin centre
+- `product.html` / `product.js` — listing details, seller disclosure, WhatsApp contact and reports
+- `script.js` — marketplace, account, seller, listing and administration logic
+- `styles.css` — responsive visual design
+- `data.js` — demonstration listings
+- `supabase-v7-upgrade.sql` — migration for an existing project
+- `supabase-setup.sql` — complete setup for a new project
+- `config.example.js` — blank configuration example
+- Legal and information HTML pages
 
-### How guest mode works
+# Before public launch
 
-- Guest mode is implemented locally in the browser and does not create a Supabase user.
-- Guests may browse products and use the browser-local wishlist.
-- Guests cannot submit listings, open a seller dashboard or access admin controls.
-- Selecting **Sell an item** while in guest mode opens the full registration options.
-
-## Part 5 — Make your account an admin
-
-1. Upload and publish the website.
-2. Register your own account through the website.
-3. In Supabase, open **SQL Editor**.
-4. Run this after replacing the email:
-
-```sql
-insert into public.admins (user_id)
-select id from auth.users
-where email = 'your-real-email@example.com'
-on conflict (user_id) do nothing;
-```
-
-5. Put the same email inside `ADMIN_EMAILS` in `config.js`.
-6. Log out and log in again.
-
-Both steps are required:
-
-- `config.js` displays the Admin button.
-- The `admins` database table gives the account permission to approve or reject listings.
-
-## How listing approval works
-
-1. A registered seller submits an item.
-2. The listing is saved with the status `pending`.
-3. It appears immediately in the seller's dashboard.
-4. It does **not** appear publicly yet.
-5. An admin opens **Account → Admin approvals**.
-6. The admin approves or rejects it.
-7. Approved listings appear on the homepage and receive an individual product page.
-8. The seller can later mark an approved listing as sold.
-
-This is the fix for submitted products appearing to be missing: pending products stay visible to their seller while waiting for approval.
-
-## Put the website on GitHub Pages
-
-1. Open your GitHub repository.
-2. Upload all files from this folder to the repository root.
-3. Commit the changes.
-4. Open **Settings → Pages**.
-5. Under **Build and deployment**, choose **Deploy from a branch**.
-6. Select:
-   - Branch: `main`
-   - Folder: `/root`
-7. Click **Save**.
-
-The repository must contain `index.html` at its top level, not inside another folder.
-
-## Connect `du2bao2.com` through Cloudflare
-
-The included `CNAME` file already contains:
-
-```text
-du2bao2.com
-```
-
-In GitHub:
-
-1. Open **Repository → Settings → Pages**.
-2. Enter `du2bao2.com` under **Custom domain**.
-3. Save it before changing DNS.
-
-In Cloudflare DNS, create these four apex records:
-
-| Type | Name | Content | Proxy status |
-|---|---|---|---|
-| A | `@` | `185.199.108.153` | DNS only initially |
-| A | `@` | `185.199.109.153` | DNS only initially |
-| A | `@` | `185.199.110.153` | DNS only initially |
-| A | `@` | `185.199.111.153` | DNS only initially |
-
-For the `www` version, add:
-
-| Type | Name | Content | Proxy status |
-|---|---|---|---|
-| CNAME | `www` | `sylvia218.github.io` | DNS only initially |
-
-Remove any conflicting old `A`, `AAAA` or `CNAME` records for `@` or `www` that point somewhere else. Do not add a wildcard `*` record for the GitHub Pages site.
-
-After GitHub confirms the domain and the certificate becomes available, enable **Enforce HTTPS** in GitHub Pages settings. DNS and HTTPS changes can take time to finish.
-
-## Local testing on a computer
-
-From inside the folder, run:
-
-```bash
-python3 -m http.server 8000
-```
-
-Then open:
-
-```text
-http://localhost:8000
-```
-
-A local server is better than double-clicking `index.html`, especially when testing the service worker and Supabase.
-
-## Important launch limitations
-
-This version includes marketplace listings, accounts, approvals, images, dashboards and direct WhatsApp contact. Before accepting real customer payments, add and legally review:
-
-- A Malaysia-supported payment gateway
-- Payment confirmation and order records
-- Delivery and tracking
-- Refund and dispute procedures
-- Item-authentication operations
-- Seller identity checks
-- Terms of service and privacy policy
-- Prohibited-item rules
-- Fraud monitoring
-- Transactional emails
-- Database backups and monitoring
-
-Do not advertise escrow, guaranteed authentication, buyer protection or secure payment as active services until those systems are actually implemented and tested.
-
-
-## Footer and legal-information upgrade
-
-This package adds a dark multi-column footer inspired by the supplied reference image and links it to these new pages:
-
-- `shipping.html`
-- `returns.html`
-- `privacy.html`
-- `terms.html`
-- `prohibited-items.html`
-- `safety.html`
-- `seller-rules.html`
-- `marketplace-role.html`
-- `contact.html`
-
-The pages are written for the current Stage 1 model: buyers and sellers deal directly, while DU2BAO2 provides listings, accounts, contact, review and complaint functions.
-
-### Complete these placeholders before public launch
-
-Search the legal pages for square brackets and replace:
-
-- `[DU2BAO2 LEGAL ENTITY]`
-- `[ADD REGISTERED ENTITY]`
-- `[ADD NUMBER WHEN REGISTERED]`
-- `[ADD SUPPORT EMAIL]`
-- `[ADD PRIVACY EMAIL]`
-- `[ADD SUPPORT NUMBER, IF USED]`
-- `[ADD SUPPORT HOURS]`
-- `[ADD ADDRESS]`
-- `[ADD REGISTERED OR SERVICE ADDRESS]`
-
-These pages are practical drafts and should receive a final Malaysian legal review. Adding policy pages alone does not make the marketplace fully compliant. In particular, the uploaded prototype still needs the final seller-identity, Bahasa Malaysia disclosure, complaint-record and retention workflow to be implemented in the database and listing form before public launch.
+The legal pages remain pre-launch drafts. Insert the final registered entity, SSM number, service address, support contact and privacy contact. Have a qualified Malaysian professional review the actual business model, data practices, seller disclosures, complaint procedure, retention schedule and any future payment, escrow, delivery or authentication service.

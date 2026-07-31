@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
+  <title id="title">Mirrorless camera illustration</title>
+  <desc id="desc">A modern black camera on a soft grey background.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#ecebe6"/><stop offset="1" stop-color="#bcbab2"/></linearGradient>
+    <linearGradient id="body" x1="0" x2="1"><stop stop-color="#171817"/><stop offset=".55" stop-color="#343633"/><stop offset="1" stop-color="#111210"/></linearGradient>
+    <radialGradient id="glass"><stop stop-color="#6c9da9"/><stop offset=".4" stop-color="#29464f"/><stop offset=".72" stop-color="#10191c"/><stop offset="1" stop-color="#050708"/></radialGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="38" stdDeviation="32" flood-color="#262724" flood-opacity=".3"/></filter>
+  </defs>
+  <rect width="1200" height="1200" rx="80" fill="url(#bg)"/>
+  <path d="M0 930c250-100 404-75 593 2 210 85 384 79 607-32v300H0z" fill="#fff" opacity=".28"/>
+  <g filter="url(#shadow)">
+    <path d="M190 420c0-48 39-87 87-87h161l63-93h242l62 93h119c48 0 87 39 87 87v452c0 48-39 87-87 87H277c-48 0-87-39-87-87z" fill="url(#body)"/>
+    <rect x="251" y="379" width="189" height="82" rx="23" fill="#0c0d0c"/>
+    <rect x="745" y="378" width="191" height="58" rx="20" fill="#0c0d0c"/>
+    <circle cx="602" cy="655" r="278" fill="#0a0b0a" stroke="#60635f" stroke-width="29"/>
+    <circle cx="602" cy="655" r="224" fill="#242725" stroke="#111" stroke-width="26"/>
+    <circle cx="602" cy="655" r="170" fill="url(#glass)"/>
+    <circle cx="548" cy="603" r="49" fill="#c9edf4" opacity=".25"/>
+    <circle cx="314" cy="551" r="34" fill="#575b57"/>
+    <rect x="860" y="493" width="82" height="177" rx="32" fill="#1f211f"/>
+    <text x="291" y="814" font-family="Arial, sans-serif" font-size="48" font-weight="700" fill="#d3d5d0">DU2</text>
+  </g>
+</svg>

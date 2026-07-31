@@ -1,32 +1,35 @@
-CNAME
-INSTALL-FOOTER-UPGRADE.md
-INSTALL-GOOGLE-GUEST-LOGIN.md
-PACKAGE-FILES.txt
-README.md
-UPLOAD-INSTRUCTIONS.txt
-assets/camera.svg
-assets/laptop.svg
-assets/luxury-bag.svg
-assets/watch.svg
-config.example.js
-config.js
-contact.html
-data.js
-favicon.svg
-index.html
-manifest.webmanifest
-marketplace-role.html
-privacy.html
-product.html
-product.js
-prohibited-items.html
-returns.html
-safety.html
-script.js
-seller-rules.html
-service-worker.js
-shipping.html
-styles.css
-supabase-google-profile-upgrade.sql
-supabase-setup.sql
-terms.html
+DU2BAO2 V7 PACKAGE
+
+Website:
+- index.html
+- product.html
+- styles.css
+- script.js
+- product.js
+- data.js
+- service-worker.js
+- manifest.webmanifest
+- favicon.svg
+- CNAME
+- assets/
+
+Information and legal drafts:
+- privacy.html
+- terms.html
+- shipping.html
+- returns.html
+- safety.html
+- prohibited-items.html
+- seller-rules.html
+- marketplace-role.html
+- contact.html
+
+Supabase:
+- supabase-v7-upgrade.sql (existing projects)
+- supabase-setup.sql (new projects)
+- supabase-google-profile-upgrade.sql
+
+Instructions:
+- README.md
+- UPLOAD-INSTRUCTIONS.txt
+- config.example.js

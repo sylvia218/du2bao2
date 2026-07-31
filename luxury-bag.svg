@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
+  <title id="title">Luxury handbag illustration</title>
+  <desc id="desc">A refined brown handbag on a warm neutral background.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#f7efe3"/><stop offset="1" stop-color="#dfc8a5"/></linearGradient>
+    <linearGradient id="bag" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#6a4028"/><stop offset=".55" stop-color="#9b6a45"/><stop offset="1" stop-color="#4a2b1d"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="34" stdDeviation="34" flood-color="#4d2f1e" flood-opacity=".25"/></filter>
+  </defs>
+  <rect width="1200" height="1200" rx="80" fill="url(#bg)"/>
+  <circle cx="910" cy="230" r="190" fill="#fff" opacity=".26"/>
+  <circle cx="250" cy="980" r="240" fill="#fff" opacity=".18"/>
+  <g filter="url(#shadow)">
+    <path d="M323 436c0-128 103-232 230-232h94c127 0 230 104 230 232v92h-95v-83c0-82-66-148-147-148h-70c-81 0-147 66-147 148v83h-95z" fill="none" stroke="#4f2e20" stroke-width="46" stroke-linecap="round"/>
+    <path d="M258 475c0-40 32-72 72-72h540c40 0 72 32 72 72l47 488c5 54-37 101-91 101H302c-54 0-96-47-91-101z" fill="url(#bag)"/>
+    <path d="M259 563h682" stroke="#c79b71" stroke-width="18" opacity=".55"/>
+    <path d="M345 435v579M855 435v579" stroke="#c79b71" stroke-width="13" opacity=".34"/>
+    <rect x="513" y="539" width="174" height="128" rx="26" fill="#d4ad68"/>
+    <rect x="548" y="569" width="104" height="70" rx="18" fill="#6d4328"/>
+    <circle cx="600" cy="604" r="13" fill="#ead094"/>
+  </g>
+</svg>

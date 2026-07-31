@@ -146,3 +146,20 @@ window.DU2BAO2_DEMO_PRODUCTS = [
     images: []
   }
 ];
+
+// V7 demonstration disclosure fields. Live listings use the seller profile and listing form.
+window.DU2BAO2_DEMO_PRODUCTS = window.DU2BAO2_DEMO_PRODUCTS.map((product, index) => ({
+  ...product,
+  title_en: product.title_en || "",
+  description_en: product.description_en || product.description,
+  description: product.description_bm || "Maklumat produk ini disediakan oleh penjual. Sila semak keadaan barang, aksesori, sejarah penggunaan dan butiran penting dengan penjual sebelum meneruskan.",
+  payment_methods: product.payment_methods || "Kaedah bayaran hendaklah disahkan dengan penjual sebelum meneruskan.",
+  delivery_estimate: product.delivery_estimate || "Kaedah dan anggaran masa penghantaran atau penyerahan hendaklah disahkan dengan penjual.",
+  sale_terms: product.sale_terms || "Pembeli hendaklah memeriksa maklumat barang dan mengesahkan syarat yang dipersetujui sebelum meneruskan.",
+  certification_info: product.certification_info || "Tidak berkenaan / Not applicable",
+  seller_type: product.seller_type || (index % 2 === 0 ? "business" : "individual"),
+  seller_business_name: product.seller_business_name || (index % 2 === 0 ? product.seller_name : ""),
+  seller_email: product.seller_email || `seller${index + 1}@example.com`,
+  seller_address: product.seller_address || `${product.location}, Malaysia`,
+  seller_website: product.seller_website || ""
+}));

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
+  <title id="title">Premium watch illustration</title>
+  <desc id="desc">A classic steel watch on a charcoal background.</desc>
+  <defs>
+    <radialGradient id="bg" cx="40%" cy="30%"><stop stop-color="#4a4a47"/><stop offset="1" stop-color="#171817"/></radialGradient>
+    <linearGradient id="steel" x1="0" x2="1"><stop stop-color="#737674"/><stop offset=".25" stop-color="#e5e7e5"/><stop offset=".5" stop-color="#777b79"/><stop offset=".75" stop-color="#f2f3f2"/><stop offset="1" stop-color="#636765"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="28" stdDeviation="28" flood-opacity=".45"/></filter>
+  </defs>
+  <rect width="1200" height="1200" rx="80" fill="url(#bg)"/>
+  <circle cx="200" cy="220" r="170" fill="#fff" opacity=".035"/>
+  <g filter="url(#shadow)">
+    <rect x="474" y="90" width="252" height="1020" rx="90" fill="url(#steel)"/>
+    <path d="M495 184h210M495 1016h210" stroke="#2c2e2d" stroke-width="13" opacity=".55"/>
+    <circle cx="600" cy="600" r="350" fill="#282b2a" stroke="url(#steel)" stroke-width="65"/>
+    <circle cx="600" cy="600" r="277" fill="#f5f0e5"/>
+    <circle cx="600" cy="600" r="244" fill="#e7dfcf" stroke="#b5aa96" stroke-width="5"/>
+    <g stroke="#3d403e" stroke-width="12" stroke-linecap="round">
+      <path d="M600 377v38M600 785v38M377 600h38M785 600h38"/>
+      <path d="M442 442l26 26M732 732l26 26M758 442l-26 26M468 732l-26 26"/>
+    </g>
+    <path d="M600 600l-6-150" stroke="#252725" stroke-width="18" stroke-linecap="round"/>
+    <path d="M600 600l115 72" stroke="#252725" stroke-width="14" stroke-linecap="round"/>
+    <path d="M600 600l-88 95" stroke="#a06832" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="600" cy="600" r="24" fill="#252725"/>
+    <rect x="874" y="548" width="78" height="104" rx="26" fill="url(#steel)"/>
+  </g>
+</svg>

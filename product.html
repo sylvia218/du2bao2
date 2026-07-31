@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#17130f" />
-  <meta name="description" content="View a product listing on DU2BAO2." />
+  <meta name="description" content="View a quality pre-owned product listing on DU2BAO2." />
   <title>Product | DU2BAO2</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=6" />
+  <link rel="stylesheet" href="styles.css?v=7" />
 </head>
 <body>
   <header class="site-header">
@@ -34,8 +34,9 @@
   <div class="footer-main">
     <div class="footer-about">
       <a class="brand light-brand" href="index.html">DU<span>2</span>BAO<span>2</span></a>
-      <p>Malaysia’s pre-owned marketplace where buyers and sellers communicate and complete transactions directly.</p>
-      <span class="footer-note">DU2BAO2 does not hold buyer funds, provide escrow, arrange delivery or guarantee item authenticity in the current marketplace model.</span>
+      <p>Malaysia’s marketplace for quality pre-owned goods.</p>
+      <span class="footer-note">DU2BAO2 helps buyers and sellers connect, communicate and arrange transactions using the options currently available on the platform.</span>
+      <span class="footer-note">DU2BAO2 does not currently hold buyer funds, provide escrow services, arrange delivery or independently authenticate listed items. Additional services may be introduced in the future under their applicable terms.</span>
     </div>
 
     <div class="footer-column">
@@ -62,21 +63,71 @@
       </a>
       <a class="footer-support-row" href="marketplace-role.html">
         <span class="footer-support-icon" aria-hidden="true">↔</span>
-        <span><strong>TRANSACTION MODEL</strong><small>Buyer and seller deal directly</small></span>
+        <span><strong>TRANSACTION OPTIONS</strong><small>Available arrangements are confirmed between buyers and sellers</small></span>
       </a>
     </div>
   </div>
 
   <div class="footer-bottom">
     <small>© 2026 DU2BAO2. All rights reserved.</small>
-    <small>Pre-launch legal drafts must be reviewed and completed with the registered entity and contact details before public launch.</small>
+    <small>Pre-launch legal drafts and operational procedures must be reviewed with the registered entity details before public launch.</small>
   </div>
 </footer>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<dialog id="contactDialog" class="app-dialog">
+    <form id="contactForm">
+      <button class="dialog-close" type="button" data-close-dialog="contactDialog" aria-label="Close">×</button>
+      <span class="eyebrow">CONTACT THE SELLER</span>
+      <h2>How can the seller help?</h2>
+      <p class="dialog-intro">Choose an enquiry type and DU2BAO2 will prepare a WhatsApp message for you.</p>
+      <div class="contact-choice-grid">
+        <button type="button" class="active" data-contact-intent="question">Ask a question</button>
+        <button type="button" data-contact-intent="availability">Check availability</button>
+        <button type="button" data-contact-intent="offer">Make an offer</button>
+      </div>
+      <label id="offerAmountLabel" hidden>Offer amount (RM)<input name="offer_amount" type="number" min="1" max="99999999" /></label>
+      <label>Message<textarea name="message" maxlength="800" placeholder="Add any details or questions for the seller."></textarea></label>
+      <div class="listing-disclaimer">The message will open in WhatsApp. DU2BAO2 does not collect payment or confirm that a transaction has been completed.</div>
+      <button class="primary-btn submit-btn" id="continueWhatsAppButton" type="submit">Continue to WhatsApp</button>
+      <p class="form-message" id="contactMessage"></p>
+    </form>
+  </dialog>
+
+  <dialog id="reportDialog" class="app-dialog">
+    <form id="reportForm">
+      <button class="dialog-close" type="button" data-close-dialog="reportDialog" aria-label="Close">×</button>
+      <span class="eyebrow">REPORT A LISTING</span>
+      <h2>Tell us what is wrong</h2>
+      <p class="dialog-intro">Reports are reviewed for marketplace safety and moderation. A report does not automatically prove wrongdoing or create a refund.</p>
+      <label>Reason<select name="reason" required>
+        <option value="">Choose a reason</option>
+        <option value="suspected_counterfeit">Suspected counterfeit or authenticity concern</option>
+        <option value="misleading_information">Misleading or inaccurate information</option>
+        <option value="prohibited_item">Prohibited, illegal or unsafe item</option>
+        <option value="scam_concern">Scam or payment concern</option>
+        <option value="seller_conduct">Seller conduct</option>
+        <option value="other">Other</option>
+      </select></label>
+      <div class="form-grid">
+        <label>Your name — optional<input name="reporter_name" maxlength="120" /></label>
+        <label>Email for follow-up<input name="reporter_email" type="email" required maxlength="160" /></label>
+      </div>
+      <label>Details<textarea name="details" required minlength="20" maxlength="2500" placeholder="Describe the issue and include relevant facts. Do not post passwords, bank PINs or one-time codes."></textarea></label>
+      <label>Evidence link — optional<input name="evidence_url" type="url" maxlength="500" placeholder="Link to relevant screenshots or documents, if safely hosted" /></label>
+      <label class="honeypot" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off" /></label>
+      <label class="checkbox-row">
+        <input name="report_declaration" type="checkbox" required />
+        <span>I confirm that this report is made honestly and that the information provided is accurate to the best of my knowledge.</span>
+      </label>
+      <button class="danger-btn submit-btn" id="submitReportButton" type="submit">Submit report</button>
+      <p class="form-message" id="reportMessage"></p>
+    </form>
+  </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js?v=6"></script>
-  <script src="data.js?v=6"></script>
-  <script src="product.js?v=6"></script>
+  <script src="config.js?v=7"></script>
+  <script src="data.js?v=7"></script>
+  <script src="product.js?v=7"></script>
 </body>
 </html>

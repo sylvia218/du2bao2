@@ -22,6 +22,9 @@
     authMode: "login",
     wishlist: new Set(JSON.parse(localStorage.getItem("du2bao2-wishlist") || "[]")),
     photoUrls: [],
+    sellerDetails: null,
+    adminVerified: false,
+    adminTab: "listings",
     loading: true
   };
 
@@ -126,18 +129,29 @@
       id: row.id,
       brand: row.brand || "UNBRANDED",
       title: row.title || "Untitled item",
+      title_en: row.title_en || "",
       category: row.category || "Miscellaneous",
       price: Number(row.price || 0),
       condition: row.condition || "Good",
       location: row.location || "Malaysia",
       description: row.description || "",
+      description_en: row.description_en || "",
+      payment_methods: row.payment_methods || "",
+      delivery_estimate: row.delivery_estimate || "",
+      sale_terms: row.sale_terms || "",
+      certification_info: row.certification_info || "",
       badge: row.badge || "Listing reviewed",
       status: row.status || "pending",
       visual: row.visual || (row.brand || "DU").slice(0, 2).toUpperCase(),
       created_at: row.created_at || new Date().toISOString(),
       seller_id: row.seller_id,
       seller_name: profile?.display_name || row.seller_name || "DU2BAO2 Seller",
-      seller_whatsapp: profile?.whatsapp || row.seller_whatsapp || "",
+      seller_whatsapp: profile?.public_phone || profile?.whatsapp || row.seller_whatsapp || "",
+      seller_email: profile?.public_email || "",
+      seller_address: profile?.public_address || "",
+      seller_website: profile?.website_url || "",
+      seller_type: profile?.seller_type || "individual",
+      seller_business_name: profile?.business_name || "",
       seller_verified: Boolean(profile?.is_verified || row.seller_verified),
       images
     };
@@ -162,7 +176,7 @@
     try {
       const { data, error } = await supabaseClient
         .from("listings")
-        .select("*, listing_images(image_url, sort_order), profiles(display_name, whatsapp, is_verified)")
+        .select("*, listing_images(image_url, sort_order), profiles(display_name, whatsapp, public_phone, public_email, public_address, website_url, seller_type, business_name, is_verified)")
         .eq("status", "approved")
         .order("created_at", { ascending: false });
 
@@ -348,6 +362,7 @@
 
   function isAdmin() {
     if (isGuestUser()) return false;
+    if (state.adminVerified) return true;
     const email = state.currentUser?.email?.toLowerCase();
     return Boolean(email && (config.ADMIN_EMAILS || []).some((item) => item.toLowerCase() === email));
   }
@@ -376,6 +391,7 @@
       $("#accountEmail").textContent = guest
         ? "Guest browsing mode. You can browse and save listings, but you need a Google or email account to sell."
         : (state.currentUser.email || "Signed-in account");
+      $("#sellerDetailsButton").hidden = guest;
       $("#dashboardButton").hidden = guest;
       $("#adminButton").hidden = guest || !isAdmin();
       $("#guestUpgradeButton").hidden = !guest;
@@ -388,10 +404,194 @@
     sessionStorage.removeItem("du2bao2-guest-mode");
   }
 
+
+  function getDemoSellerDetails() {
+    return JSON.parse(localStorage.getItem("du2bao2-demo-seller-details") || "null");
+  }
+
+  function saveDemoSellerDetails(details) {
+    localStorage.setItem("du2bao2-demo-seller-details", JSON.stringify(details));
+  }
+
+  function sellerDetailsComplete(details) {
+    return Boolean(
+      details &&
+      details.display_name &&
+      details.public_email &&
+      details.public_phone &&
+      details.public_address &&
+      details.legal_name &&
+      details.private_phone &&
+      details.state &&
+      details.country &&
+      details.declaration_accepted
+    );
+  }
+
+  async function refreshAdminStatus() {
+    state.adminVerified = false;
+    if (!state.currentUser || isGuestUser()) return;
+    if (!supabaseClient) {
+      const email = state.currentUser?.email?.toLowerCase();
+      state.adminVerified = Boolean(email && (config.ADMIN_EMAILS || []).some((item) => item.toLowerCase() === email));
+      return;
+    }
+    const { data, error } = await supabaseClient
+      .from("admins")
+      .select("user_id")
+      .eq("user_id", state.currentUser.id)
+      .maybeSingle();
+    if (!error && data) state.adminVerified = true;
+  }
+
+  async function getSellerDetails(force = false) {
+    if (!state.currentUser || isGuestUser()) return null;
+    if (!force && state.sellerDetails) return state.sellerDetails;
+
+    if (!supabaseClient) {
+      state.sellerDetails = getDemoSellerDetails();
+      return state.sellerDetails;
+    }
+
+    const [{ data: publicData, error: publicError }, { data: privateData, error: privateError }] = await Promise.all([
+      supabaseClient
+        .from("profiles")
+        .select("display_name, seller_type, public_email, public_phone, public_address, website_url, business_name")
+        .eq("id", state.currentUser.id)
+        .maybeSingle(),
+      supabaseClient
+        .from("seller_private_profiles")
+        .select("legal_name, private_phone, state, country, business_registration_no, identity_reference_last4, declaration_accepted, declaration_at")
+        .eq("user_id", state.currentUser.id)
+        .maybeSingle()
+    ]);
+
+    if (publicError) throw publicError;
+    if (privateError) throw privateError;
+    state.sellerDetails = { ...(publicData || {}), ...(privateData || {}) };
+    return state.sellerDetails;
+  }
+
+  function fillSellerDetailsForm(details = {}) {
+    const form = $("#sellerDetailsForm");
+    const values = {
+      display_name: details.display_name || userDisplayName(),
+      seller_type: details.seller_type || "individual",
+      public_email: details.public_email || state.currentUser?.email || "",
+      public_phone: details.public_phone || "",
+      public_address: details.public_address || "",
+      website_url: details.website_url || "",
+      business_name: details.business_name || "",
+      legal_name: details.legal_name || state.currentUser?.user_metadata?.full_name || "",
+      private_phone: details.private_phone || details.public_phone || "",
+      state: details.state || "",
+      country: details.country || "Malaysia",
+      business_registration_no: details.business_registration_no || "",
+      identity_reference_last4: details.identity_reference_last4 || ""
+    };
+    Object.entries(values).forEach(([name, value]) => {
+      if (form.elements[name]) form.elements[name].value = value;
+    });
+    form.elements.seller_declaration.checked = Boolean(details.declaration_accepted);
+  }
+
+  async function openSellerDetails(options = {}) {
+    if (!state.currentUser || isGuestUser()) {
+      requireAccount(() => openSellerDetails(options));
+      return;
+    }
+    closeDialog("authDialog");
+    try {
+      const details = await getSellerDetails(Boolean(options.force));
+      fillSellerDetailsForm(details || {});
+      setMessage(
+        $("#sellerDetailsMessage"),
+        options.required ? "Complete these details before creating a listing." : "",
+        options.required ? "error" : ""
+      );
+      openDialog("sellerDetailsDialog");
+    } catch (error) {
+      console.error(error);
+      showToast(error.message || "Unable to load seller details");
+    }
+  }
+
+  async function handleSellerDetailsSubmit(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const button = $("#saveSellerDetailsButton");
+    const message = $("#sellerDetailsMessage");
+    const publicPhone = normalizePhone(formData.get("public_phone") || "");
+    const privatePhone = normalizePhone(formData.get("private_phone") || "");
+    const idLast4 = String(formData.get("identity_reference_last4") || "").trim();
+
+    if (idLast4 && !/^[A-Za-z0-9]{4}$/.test(idLast4)) {
+      setMessage(message, "The optional ID reference must contain exactly 4 letters or numbers.", "error");
+      return;
+    }
+
+    button.disabled = true;
+    setMessage(message, "Saving seller details…");
+
+    const publicPayload = {
+      id: state.currentUser.id,
+      display_name: String(formData.get("display_name") || "").trim(),
+      seller_type: String(formData.get("seller_type") || "individual"),
+      public_email: String(formData.get("public_email") || "").trim().toLowerCase(),
+      public_phone: publicPhone,
+      whatsapp: publicPhone,
+      public_address: String(formData.get("public_address") || "").trim(),
+      website_url: String(formData.get("website_url") || "").trim(),
+      business_name: String(formData.get("business_name") || "").trim()
+    };
+
+    const privatePayload = {
+      user_id: state.currentUser.id,
+      legal_name: String(formData.get("legal_name") || "").trim(),
+      private_phone: privatePhone,
+      state: String(formData.get("state") || "").trim(),
+      country: String(formData.get("country") || "Malaysia").trim(),
+      business_registration_no: String(formData.get("business_registration_no") || "").trim(),
+      identity_reference_last4: idLast4,
+      declaration_accepted: Boolean(formData.get("seller_declaration")),
+      declaration_version: "seller-declaration-v1",
+      declaration_at: new Date().toISOString()
+    };
+
+    try {
+      if (!supabaseClient) {
+        state.sellerDetails = { ...publicPayload, ...privatePayload };
+        saveDemoSellerDetails(state.sellerDetails);
+      } else {
+        const { error: profileError } = await supabaseClient
+          .from("profiles")
+          .upsert(publicPayload, { onConflict: "id" });
+        if (profileError) throw profileError;
+
+        const { error: privateError } = await supabaseClient
+          .from("seller_private_profiles")
+          .upsert(privatePayload, { onConflict: "user_id" });
+        if (privateError) throw privateError;
+        state.sellerDetails = { ...publicPayload, ...privatePayload };
+      }
+
+      setMessage(message, "Seller details saved.", "success");
+      showToast("Seller details saved");
+      setTimeout(() => closeDialog("sellerDetailsDialog"), 650);
+    } catch (error) {
+      console.error(error);
+      setMessage(message, error.message || "Unable to save seller details.", "error");
+    } finally {
+      button.disabled = false;
+    }
+  }
+
   async function initializeAuth() {
     if (!supabaseClient) {
       state.currentUser = getDemoUser();
       if (state.currentUser) clearGuestMode();
+      await refreshAdminStatus();
       updateAccountUI();
       return;
     }
@@ -399,11 +599,14 @@
     const { data } = await supabaseClient.auth.getSession();
     state.currentUser = data.session?.user || null;
     if (state.currentUser) clearGuestMode();
+    await refreshAdminStatus();
     updateAccountUI();
 
-    supabaseClient.auth.onAuthStateChange((_event, session) => {
+    supabaseClient.auth.onAuthStateChange(async (_event, session) => {
       state.currentUser = session?.user || null;
+      state.sellerDetails = null;
       if (state.currentUser) clearGuestMode();
+      await refreshAdminStatus();
       updateAccountUI();
     });
   }
@@ -553,6 +756,7 @@
   }
 
   function validatePhotos(files) {
+    if (files.length < 2) return "Please upload at least 2 actual-item photos.";
     if (files.length > 8) return "Please choose no more than 8 photos.";
     const allowed = ["image/jpeg", "image/png", "image/webp"];
     for (const file of files) {
@@ -601,18 +805,33 @@
       return;
     }
 
+    const sellerDetails = await getSellerDetails();
+    if (!sellerDetailsComplete(sellerDetails)) {
+      setMessage(message, "Complete your seller details before submitting a listing.", "error");
+      closeDialog("sellDialog");
+      await openSellerDetails({ required: true });
+      return;
+    }
+
     submitButton.disabled = true;
     setMessage(message, "Saving your listing…");
 
     const payload = {
       seller_id: state.currentUser?.id,
       title: String(formData.get("title") || "").trim(),
+      title_en: String(formData.get("title_en") || "").trim(),
       brand: String(formData.get("brand") || "").trim(),
       category: String(formData.get("category") || "Miscellaneous"),
       price: Number(formData.get("price")),
       condition: String(formData.get("condition") || "Good"),
       location: String(formData.get("location") || "Malaysia").trim(),
       description: String(formData.get("description") || "").trim(),
+      description_en: String(formData.get("description_en") || "").trim(),
+      payment_methods: String(formData.get("payment_methods") || "").trim(),
+      delivery_estimate: String(formData.get("delivery_estimate") || "").trim(),
+      sale_terms: String(formData.get("sale_terms") || "").trim(),
+      certification_info: String(formData.get("certification_info") || "").trim(),
+      seller_declaration_at: new Date().toISOString(),
       status: "pending"
     };
 
@@ -623,8 +842,13 @@
           ...payload,
           id: `local-${Date.now()}`,
           created_at: new Date().toISOString(),
-          seller_name: String(formData.get("seller_name") || userDisplayName()),
-          seller_whatsapp: normalizePhone(formData.get("seller_whatsapp") || config.WHATSAPP_NUMBER),
+          seller_name: sellerDetails.display_name || userDisplayName(),
+          seller_whatsapp: sellerDetails.public_phone || config.WHATSAPP_NUMBER,
+          seller_email: sellerDetails.public_email || "",
+          seller_address: sellerDetails.public_address || "",
+          seller_website: sellerDetails.website_url || "",
+          seller_type: sellerDetails.seller_type || "individual",
+          seller_business_name: sellerDetails.business_name || "",
           seller_verified: false,
           badge: "Pending review",
           visual: payload.brand.slice(0, 2).toUpperCase(),
@@ -632,14 +856,6 @@
         });
         saveDemoListings(listings);
       } else {
-        const sellerName = String(formData.get("seller_name") || userDisplayName()).trim();
-        const whatsapp = normalizePhone(formData.get("seller_whatsapp") || "");
-        await supabaseClient.from("profiles").upsert({
-          id: state.currentUser.id,
-          display_name: sellerName,
-          whatsapp
-        }, { onConflict: "id" });
-
         const { data, error } = await supabaseClient.from("listings").insert(payload).select().single();
         if (error) throw error;
         await uploadListingPhotos(data.id, files);
@@ -727,34 +943,114 @@
     if (!supabaseClient) return getDemoListings().filter((item) => item.status === "pending");
     const { data, error } = await supabaseClient
       .from("listings")
-      .select("*, listing_images(image_url, sort_order), profiles(display_name, whatsapp, is_verified)")
+      .select("*, listing_images(image_url, sort_order), profiles(display_name, whatsapp, public_phone, public_email, public_address, website_url, seller_type, business_name, is_verified)")
       .eq("status", "pending")
       .order("created_at", { ascending: true });
     if (error) throw error;
     return (data || []).map(normalizeListing);
   }
 
+  async function getReports() {
+    if (!supabaseClient) {
+      return JSON.parse(localStorage.getItem("du2bao2-demo-reports") || "[]")
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    }
+    const { data, error } = await supabaseClient
+      .from("reports")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return data || [];
+  }
+
+  async function getSellerRecords() {
+    if (!supabaseClient) {
+      const details = getDemoSellerDetails();
+      return details ? [{ user_id: state.currentUser.id, ...details }] : [];
+    }
+    const { data, error } = await supabaseClient
+      .from("seller_private_profiles")
+      .select("user_id, legal_name, private_phone, state, country, business_registration_no, declaration_accepted, declaration_at, retention_until, created_at, updated_at")
+      .order("updated_at", { ascending: false });
+    if (error) throw error;
+    return data || [];
+  }
+
+  function reportReasonLabel(reason) {
+    const labels = {
+      suspected_counterfeit: "Suspected counterfeit",
+      misleading_information: "Misleading information",
+      prohibited_item: "Prohibited or unsafe item",
+      scam_concern: "Scam or payment concern",
+      seller_conduct: "Seller conduct",
+      other: "Other"
+    };
+    return labels[reason] || reason || "Report";
+  }
+
+  async function renderAdminTab(tab = state.adminTab) {
+    state.adminTab = tab;
+    $$("[data-admin-tab]").forEach((button) => button.classList.toggle("active", button.dataset.adminTab === tab));
+    $("#adminList").innerHTML = "<p class=\"empty-mini\">Loading…</p>";
+
+    try {
+      if (tab === "listings") {
+        const listings = await getPendingListings();
+        $("#adminList").innerHTML = listings.length ? listings.map((item) => `
+          <article class="mini-card">
+            <div class="mini-image">${item.images?.[0] ? `<img src="${escapeHTML(item.images[0])}" alt="" />` : escapeHTML(item.visual || item.brand?.slice(0, 2) || "DU")}</div>
+            <div class="mini-copy"><strong>${escapeHTML(item.title)}</strong><span>${escapeHTML(item.brand)} · ${money.format(item.price)} · ${escapeHTML(item.seller_name || "Seller")}</span>${statusPill(item.status)}</div>
+            <div class="mini-actions"><button class="approve" data-admin-action="approved" data-id="${escapeHTML(item.id)}">Approve</button><button class="reject" data-admin-action="rejected" data-id="${escapeHTML(item.id)}">Reject</button></div>
+          </article>`).join("") : "<p class=\"empty-mini\">There are no listings waiting for approval.</p>";
+        $$("[data-admin-action]").forEach((button) => button.addEventListener("click", () => moderateListing(button.dataset.id, button.dataset.adminAction)));
+        return;
+      }
+
+      if (tab === "reports") {
+        const reports = await getReports();
+        $("#adminList").innerHTML = reports.length ? reports.map((report) => `
+          <article class="admin-record-card">
+            <div>
+              <div class="record-heading"><strong>${escapeHTML(reportReasonLabel(report.reason))}</strong>${statusPill(report.status || "open")}</div>
+              <span class="record-meta">${escapeHTML(report.listing_title_snapshot || "Listing unavailable")} · ${new Date(report.created_at).toLocaleString("en-MY")}</span>
+              <p>${escapeHTML(report.details || "")}</p>
+              <span class="record-meta">Reporter: ${escapeHTML(report.reporter_name || "Not supplied")} · ${escapeHTML(report.reporter_email || "No email")}</span>
+              ${report.evidence_url ? `<a class="record-link" href="${escapeHTML(report.evidence_url)}" target="_blank" rel="noopener">Open evidence link</a>` : ""}
+            </div>
+            <div class="record-actions">
+              <button data-report-status="reviewing" data-report-id="${escapeHTML(report.id)}">Reviewing</button>
+              <button data-report-status="resolved" data-report-id="${escapeHTML(report.id)}">Resolve</button>
+              <button data-report-status="dismissed" data-report-id="${escapeHTML(report.id)}">Dismiss</button>
+            </div>
+          </article>`).join("") : "<p class=\"empty-mini\">No reports have been submitted.</p>";
+        $$("[data-report-status]").forEach((button) => button.addEventListener("click", () => updateReportStatus(button.dataset.reportId, button.dataset.reportStatus)));
+        return;
+      }
+
+      const records = await getSellerRecords();
+      $("#adminList").innerHTML = records.length ? records.map((record) => `
+        <article class="admin-record-card private-record-card">
+          <div>
+            <div class="record-heading"><strong>${escapeHTML(record.legal_name || "Unnamed seller")}</strong><span class="status-pill ${record.declaration_accepted ? "status-approved" : "status-pending"}">${record.declaration_accepted ? "Declared" : "Incomplete"}</span></div>
+            <span class="record-meta">${escapeHTML(record.private_phone || "No private phone")} · ${escapeHTML(record.state || "")}, ${escapeHTML(record.country || "")}</span>
+            <p>Business registration: ${escapeHTML(record.business_registration_no || "Not supplied")}</p>
+            <span class="record-meta">Declaration: ${record.declaration_at ? new Date(record.declaration_at).toLocaleString("en-MY") : "Not recorded"} · Retention review: ${record.retention_until ? new Date(record.retention_until).toLocaleDateString("en-MY") : "Not set"}</span>
+          </div>
+        </article>`).join("") : "<p class=\"empty-mini\">No private seller records are available.</p>";
+    } catch (error) {
+      console.error(error);
+      $("#adminList").innerHTML = `<p class="empty-mini">${escapeHTML(error.message || "Unable to load admin records.")}</p>`;
+    }
+  }
+
   async function openAdmin() {
     if (!isAdmin()) {
-      showToast("This account is not listed as an admin in config.js");
+      showToast("This account does not have admin access.");
       return;
     }
     closeDialog("authDialog");
     openDialog("adminDialog");
-    $("#adminList").innerHTML = "<p class=\"empty-mini\">Loading pending listings…</p>";
-    try {
-      const listings = await getPendingListings();
-      $("#adminList").innerHTML = listings.length ? listings.map((item) => `
-        <article class="mini-card">
-          <div class="mini-image">${item.images?.[0] ? `<img src="${escapeHTML(item.images[0])}" alt="" />` : escapeHTML(item.visual || item.brand?.slice(0, 2) || "DU")}</div>
-          <div class="mini-copy"><strong>${escapeHTML(item.title)}</strong><span>${escapeHTML(item.brand)} · ${money.format(item.price)} · ${escapeHTML(item.seller_name || "Seller")}</span>${statusPill(item.status)}</div>
-          <div class="mini-actions"><button class="approve" data-admin-action="approved" data-id="${escapeHTML(item.id)}">Approve</button><button class="reject" data-admin-action="rejected" data-id="${escapeHTML(item.id)}">Reject</button></div>
-        </article>`).join("") : "<p class=\"empty-mini\">There are no listings waiting for approval.</p>";
-      $$('[data-admin-action]').forEach((button) => button.addEventListener("click", () => moderateListing(button.dataset.id, button.dataset.adminAction)));
-    } catch (error) {
-      console.error(error);
-      $("#adminList").innerHTML = `<p class="empty-mini">${escapeHTML(error.message || "Unable to load approvals.")}</p>`;
-    }
+    await renderAdminTab(state.adminTab);
   }
 
   async function moderateListing(id, status) {
@@ -776,10 +1072,38 @@
         if (error) throw error;
       }
       showToast(status === "approved" ? "Listing approved" : "Listing rejected");
-      await openAdmin();
+      await renderAdminTab("listings");
       await fetchApprovedListings();
     } catch (error) {
       showToast(error.message || "Unable to update approval");
+    }
+  }
+
+  async function updateReportStatus(id, status) {
+    try {
+      if (!supabaseClient) {
+        const reports = JSON.parse(localStorage.getItem("du2bao2-demo-reports") || "[]");
+        const target = reports.find((item) => String(item.id) === String(id));
+        if (target) {
+          target.status = status;
+          target.handled_at = new Date().toISOString();
+        }
+        localStorage.setItem("du2bao2-demo-reports", JSON.stringify(reports));
+      } else {
+        const { error } = await supabaseClient
+          .from("reports")
+          .update({
+            status,
+            handled_by: state.currentUser.id,
+            handled_at: new Date().toISOString()
+          })
+          .eq("id", id);
+        if (error) throw error;
+      }
+      showToast("Report status updated");
+      await renderAdminTab("reports");
+    } catch (error) {
+      showToast(error.message || "Unable to update report");
     }
   }
 
@@ -789,9 +1113,20 @@
   }
 
   function openSellForm() {
-    requireAccount(() => {
-      setMessage($("#sellFormMessage"));
-      openDialog("sellDialog");
+    requireAccount(async () => {
+      try {
+        const details = await getSellerDetails();
+        if (!sellerDetailsComplete(details)) {
+          await openSellerDetails({ required: true });
+          showToast("Complete seller details before listing");
+          return;
+        }
+        setMessage($("#sellFormMessage"));
+        openDialog("sellDialog");
+      } catch (error) {
+        console.error(error);
+        showToast(error.message || "Unable to open the listing form");
+      }
     });
   }
 
@@ -847,8 +1182,11 @@
     $("#registerTab").addEventListener("click", () => setAuthMode("register"));
     $("#authForm").addEventListener("submit", handleAuthSubmit);
     $("#logoutButton").addEventListener("click", logout);
+    $("#sellerDetailsButton").addEventListener("click", () => openSellerDetails());
     $("#dashboardButton").addEventListener("click", openDashboard);
     $("#adminButton").addEventListener("click", openAdmin);
+    $("#sellerDetailsForm").addEventListener("submit", handleSellerDetailsSubmit);
+    $$("[data-admin-tab]").forEach((button) => button.addEventListener("click", () => renderAdminTab(button.dataset.adminTab)));
     $("#sellForm").addEventListener("submit", handleListingSubmit);
     $("#photoInput").addEventListener("change", (event) => {
       const files = [...event.target.files];
