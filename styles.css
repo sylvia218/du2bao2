@@ -541,3 +541,33 @@ body{background:var(--paper)}
 .english-title{margin:-1px 0 13px;color:var(--muted);font-size:15px}.static-badge{position:static!important;display:inline-flex!important}.detail-information-section{margin:27px 0}.detail-section-title{font-family:"DM Sans",sans-serif;font-size:15px;margin:0 0 12px}.bilingual-description{margin-top:13px;padding:14px 16px;border-left:3px solid #c2a474;background:#faf7f1;border-radius:0 12px 12px 0}.bilingual-description strong{font-size:11px;text-transform:uppercase;letter-spacing:.8px}.bilingual-description p{margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.7;white-space:pre-line}.transaction-info-grid,.seller-disclosure-grid{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:15px;overflow:hidden;background:#fff}.transaction-info-grid>div,.seller-disclosure-grid>div{padding:14px 16px;min-width:0}.transaction-info-grid>div:nth-child(even),.seller-disclosure-grid>div:nth-child(even){border-left:1px solid var(--line)}.transaction-info-grid>div:nth-child(n+3),.seller-disclosure-grid>div:nth-child(n+3){border-top:1px solid var(--line)}.transaction-info-grid span,.seller-disclosure-grid span{display:block;color:var(--muted);font-size:10px;line-height:1.4}.transaction-info-grid strong,.seller-disclosure-grid strong{display:block;margin-top:5px;font-size:12px;line-height:1.55;overflow-wrap:anywhere}.seller-disclosure-box{padding:20px}.seller-box-label{display:block!important;margin:0 0 5px!important;text-transform:uppercase;letter-spacing:.9px;font-size:10px!important;font-weight:800;color:var(--gold-dark)!important}.seller-disclosure-grid{margin-top:15px}.seller-disclosure-grid a{color:var(--ink)}.report-button{width:100%;min-height:45px;border:1px solid #d8b5ae;border-radius:999px;background:#fff;color:#8b3934;font-weight:800}.report-button:hover{background:#fff5f3}.danger-btn{border:0;border-radius:999px;background:#9a3f38;color:#fff;padding:12px 18px;font-weight:800}.danger-btn:disabled{opacity:.55;cursor:not-allowed}
 
 @media(max-width:760px){.privacy-split{grid-template-columns:1fr}.admin-record-card{grid-template-columns:1fr}.record-actions{justify-content:flex-start}.transaction-info-grid,.seller-disclosure-grid{grid-template-columns:1fr}.transaction-info-grid>div:nth-child(even),.seller-disclosure-grid>div:nth-child(even){border-left:0}.transaction-info-grid>div+div,.seller-disclosure-grid>div+div{border-top:1px solid var(--line)}.contact-choice-grid{grid-template-columns:1fr}.full-span{grid-column:auto}}
+
+
+/* DU2BAO2 navigation usability upgrade — v8 */
+body.menu-open{overflow:hidden}
+.site-header{justify-content:flex-start;gap:16px}
+.site-header .brand{margin-right:8px}
+.desktop-nav{margin-right:auto;gap:25px}
+.desktop-nav a[aria-current="page"]{color:var(--ink);position:relative}
+.desktop-nav a[aria-current="page"]::after{content:"";position:absolute;left:0;right:0;bottom:-9px;height:2px;background:var(--gold);border-radius:999px}
+.header-actions,.legal-header-actions{margin-left:auto}
+.mobile-menu-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:44px;height:44px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.72);color:var(--ink);padding:0 12px;flex:0 0 auto}
+.mobile-menu-button:hover,.mobile-menu-button:focus-visible{background:white;border-color:var(--gold);outline:none}
+.hamburger-lines{width:18px;display:grid;gap:4px}
+.hamburger-lines span{display:block;width:100%;height:2px;border-radius:99px;background:currentColor}
+.menu-label{font-size:12px;font-weight:800}
+.mobile-drawer{overflow-y:auto;padding-bottom:44px}
+.mobile-drawer nav{gap:0}
+.drawer-section-label{display:block;margin:24px 0 6px;color:var(--gold-dark);font-size:10px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase}
+.drawer-primary-link{display:flex!important;align-items:center;justify-content:center!important;background:var(--ink)!important;color:white!important;border:0!important;border-radius:999px;padding:13px 18px!important;margin:12px 0 4px;text-align:center!important}
+.drawer-primary-link:hover{background:var(--gold-dark)!important}
+.mobile-bottom-nav a[aria-current="page"]{color:var(--ink);font-weight:800}
+.mobile-bottom-nav a[aria-current="page"] span{color:var(--gold-dark)}
+@media(max-width:1100px){.desktop-nav{display:none}}
+@media(max-width:680px){
+  .site-header{gap:9px}
+  .menu-label{display:none}
+  .mobile-menu-button{width:42px;min-width:42px;height:42px;padding:0}
+  .site-header .brand{margin-right:auto}
+  .legal-header-actions .primary-btn,.header-actions .primary-btn{padding:10px 12px;font-size:11px}
+}

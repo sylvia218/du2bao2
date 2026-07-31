@@ -212,3 +212,11 @@ Run `supabase-v7-upgrade.sql` before testing seller details, new listings, repor
 # Before public launch
 
 The legal pages remain pre-launch drafts. Insert the final registered entity, SSM number, service address, support contact and privacy contact. Have a qualified Malaysian professional review the actual business model, data practices, seller disclosures, complaint procedure, retention schedule and any future payment, escrow, delivery or authentication service.
+
+
+## V8 navigation update
+
+- Added a visible Home link to the desktop navigation.
+- Added a three-line menu button and slide-out navigation across the homepage, product page and information pages.
+- Added consistent mobile bottom navigation for Home, Shop, Categories, Safety and Contact.
+- Added direct navigation from information pages to the seller listing flow.

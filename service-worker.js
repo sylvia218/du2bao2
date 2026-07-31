@@ -1,4 +1,4 @@
-const CACHE_NAME = "du2bao2-v7-safety-workflow";
+const CACHE_NAME = "du2bao2-v8-navigation";
 const LOCAL_FILES = [
   "./",
   "./index.html",
@@ -14,6 +14,7 @@ const LOCAL_FILES = [
   "./contact.html",
   "./styles.css",
   "./script.js",
+  "./nav.js",
   "./product.js",
   "./data.js",
   "./manifest.webmanifest",

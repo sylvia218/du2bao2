@@ -1212,6 +1212,12 @@
     await initializeAuth();
     await fetchApprovedListings();
 
+    const requestedAction = new URLSearchParams(window.location.search).get("action");
+    if (requestedAction === "sell") {
+      window.history.replaceState({}, document.title, `${window.location.pathname}${window.location.hash || ""}`);
+      await openSellForm();
+    }
+
     if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
       navigator.serviceWorker.register("service-worker.js").catch((error) => console.warn("Service worker not registered", error));
     }

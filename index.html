@@ -10,17 +10,22 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=7" />
+  <link rel="stylesheet" href="styles.css?v=8" />
 </head>
 <body>
   <a class="skip-link" href="#browse">Skip to listings</a>
 
   <header class="site-header">
-    <button class="mobile-menu-button" id="mobileMenuButton" aria-label="Open menu" aria-expanded="false">☰</button>
+    <button class="mobile-menu-button" id="mobileMenuButton" type="button" aria-label="Open navigation menu" aria-controls="mobileDrawer" aria-expanded="false">
+      <span class="hamburger-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span class="menu-label">Menu</span>
+    </button>
     <a class="brand" href="index.html" aria-label="DU2BAO2 home">DU<span>2</span>BAO<span>2</span></a>
 
     <nav class="desktop-nav" aria-label="Main navigation">
-      <a href="#browse">Browse</a>
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="#browse">Shop</a>
+      <a href="#categories">Categories</a>
       <a href="#how-it-works">How it works</a>
       <a href="#trust">Safety</a>
     </nav>
@@ -35,13 +40,20 @@
   <aside class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
     <button class="drawer-close" id="drawerClose" aria-label="Close menu">×</button>
     <a class="brand" href="index.html">DU<span>2</span>BAO<span>2</span></a>
-    <nav>
-      <a href="#browse">Browse products</a>
+    <nav aria-label="Menu navigation">
+      <span class="drawer-section-label">Explore</span>
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="#browse">Shop listings</a>
+      <a href="#categories">Browse categories</a>
       <a href="#how-it-works">How it works</a>
-      <a href="#trust">Safety and approval</a>
-      <button class="drawer-link wishlist-trigger">Wishlist (<span class="wishlist-count">0</span>)</button>
+      <a href="#trust">Safety</a>
+      <span class="drawer-section-label">Your account</span>
+      <button class="drawer-link wishlist-trigger">Saved items (<span class="wishlist-count">0</span>)</button>
       <button class="drawer-link" id="mobileAccountButton">Log in or register</button>
       <button class="primary-btn sell-trigger">Sell an item</button>
+      <span class="drawer-section-label">Help</span>
+      <a href="contact.html">Contact and support</a>
+      <a href="seller-rules.html">Seller responsibilities</a>
     </nav>
   </aside>
   <div class="drawer-overlay" id="drawerOverlay" hidden></div>
@@ -245,8 +257,8 @@
 </footer>
 
   <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
-    <a href="index.html"><span>⌂</span>Home</a>
-    <a href="#browse"><span>⌕</span>Browse</a>
+    <a href="index.html" aria-current="page"><span>⌂</span>Home</a>
+    <a href="#browse"><span>⌕</span>Shop</a>
     <button class="sell-trigger"><span>＋</span>Sell</button>
     <button class="wishlist-trigger"><span>♡</span>Saved</button>
     <button id="bottomAccountButton"><span>◎</span>Account</button>
@@ -433,8 +445,8 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js?v=7"></script>
-  <script src="data.js?v=7"></script>
-  <script src="script.js?v=7"></script>
+  <script src="config.js?v=8"></script>
+  <script src="data.js?v=8"></script>
+  <script src="script.js?v=8"></script>
 </body>
 </html>

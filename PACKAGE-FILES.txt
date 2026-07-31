@@ -33,3 +33,5 @@ Instructions:
 - README.md
 - UPLOAD-INSTRUCTIONS.txt
 - config.example.js
+
+nav.js — responsive navigation drawer for product and information pages
