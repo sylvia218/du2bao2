@@ -2,7 +2,7 @@
   "use strict";
 
   const config = window.DU2BAO2_CONFIG || {};
-  const categories = window.DU2BAO2_CATEGORIES || [];
+  const categories = ["Bags", "Cameras", "Technology", "Jewelry"];
   const demoProducts = window.DU2BAO2_DEMO_PRODUCTS || [];
   const hasSupabaseConfig = Boolean(
     config.SUPABASE_URL &&
@@ -58,6 +58,18 @@
 
   function normalizePhone(value = "") {
     return String(value).replace(/\D/g, "");
+  }
+
+  function normalizeCategory(value = "") {
+    const category = String(value || "").trim();
+    const legacyCategories = {
+      "Luxury Bags": "Bags",
+      "Watches": "Jewelry",
+      "Accessories": "Jewelry",
+      "Camera": "Cameras",
+      "Cameras & Technology": "Cameras"
+    };
+    return legacyCategories[category] || category || "Uncategorised";
   }
 
   function showToast(message) {
@@ -130,7 +142,7 @@
       brand: row.brand || "UNBRANDED",
       title: row.title || "Untitled item",
       title_en: row.title_en || "",
-      category: row.category || "Miscellaneous",
+      category: normalizeCategory(row.category),
       price: Number(row.price || 0),
       condition: row.condition || "Good",
       location: row.location || "Malaysia",
@@ -198,10 +210,11 @@
     const query = searchInput.value.toLowerCase().trim();
     const condition = conditionSelect.value;
     const items = state.products.filter((product) => {
+      const supportedCategory = categories.includes(product.category);
       const categoryMatch = state.activeCategory === "All" || product.category === state.activeCategory;
       const conditionMatch = condition === "All" || product.condition === condition;
       const searchable = `${product.brand} ${product.title} ${product.location} ${product.category}`.toLowerCase();
-      return categoryMatch && conditionMatch && searchable.includes(query);
+      return supportedCategory && categoryMatch && conditionMatch && searchable.includes(query);
     });
 
     if (sortSelect.value === "low") items.sort((a, b) => a.price - b.price);
@@ -249,18 +262,12 @@
   function renderCategories() {
     const icons = {
       All: "✦",
-      "Luxury Bags": "▱",
-      Watches: "◷",
-      Fashion: "♢",
+      Bags: "▱",
+      Cameras: "◉",
       Technology: "⌘",
-      Jewelry: "◇",
-      Accessories: "⌁",
-      Miscellaneous: "✧"
+      Jewelry: "◇"
     };
-    const labels = {
-      Technology: "Cameras & Technology",
-      Miscellaneous: "Other Premium Goods"
-    };
+    const labels = {};
 
     $("#categoryButtons").innerHTML = ["All", ...categories].map((category) => `
       <button class="category ${category === "All" ? "active" : ""}" data-category="${escapeHTML(category)}">
@@ -816,12 +823,14 @@
     submitButton.disabled = true;
     setMessage(message, "Saving your listing…");
 
+    const selectedCategory = String(formData.get("category") || "").trim();
+
     const payload = {
       seller_id: state.currentUser?.id,
       title: String(formData.get("title") || "").trim(),
       title_en: String(formData.get("title_en") || "").trim(),
       brand: String(formData.get("brand") || "").trim(),
-      category: String(formData.get("category") || "Miscellaneous"),
+      category: categories.includes(selectedCategory) ? selectedCategory : "Bags",
       price: Number(formData.get("price")),
       condition: String(formData.get("condition") || "Good"),
       location: String(formData.get("location") || "Malaysia").trim(),

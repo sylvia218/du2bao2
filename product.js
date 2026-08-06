@@ -37,6 +37,18 @@
     return digits;
   }
 
+  function normalizeCategory(value = "") {
+    const category = String(value || "").trim();
+    const legacyCategories = {
+      "Luxury Bags": "Bags",
+      "Watches": "Jewelry",
+      "Accessories": "Jewelry",
+      "Camera": "Cameras",
+      "Cameras & Technology": "Cameras"
+    };
+    return legacyCategories[category] || category || "Uncategorised";
+  }
+
   function normalizeListing(row) {
     const imageRows = Array.isArray(row.listing_images) ? [...row.listing_images] : [];
     const images = imageRows
@@ -50,7 +62,7 @@
       brand: row.brand || "UNBRANDED",
       title: row.title || "Untitled item",
       title_en: row.title_en || "",
-      category: row.category || "Miscellaneous",
+      category: normalizeCategory(row.category),
       price: Number(row.price || 0),
       condition: row.condition || "Good",
       location: row.location || "Malaysia",
