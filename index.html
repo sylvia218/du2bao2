@@ -1,16 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#17130f" />
   <meta name="description" content="DU2BAO2 — Malaysia’s marketplace for quality pre-owned bags, watches, cameras, technology and selected lifestyle goods." />
+
   <title>DU2BAO2 | Quality Pre-Owned Marketplace</title>
+
+  <script>
+    document.documentElement.classList.remove("no-js");
+    document.documentElement.classList.add("js");
+  </script>
+
+  <style>
+    html {
+      background: #f7f3ed;
+    }
+
+    body {
+      margin: 0;
+      background: #f7f3ed;
+    }
+
+    .js body {
+      opacity: 0;
+    }
+
+    .js.styles-loaded body {
+      opacity: 1;
+      transition: opacity 120ms ease-in;
+    }
+  </style>
+
   <link rel="manifest" href="manifest.webmanifest" />
+
+  <link rel="preload" href="styles.css?v=9" as="style" />
+  <link
+    rel="stylesheet"
+    href="styles.css?v=9"
+    onload="document.documentElement.classList.add('styles-loaded')"
+  />
+
+  <noscript>
+    <style>
+      body {
+        opacity: 1;
+      }
+    </style>
+  </noscript>
+
+  <script>
+    window.setTimeout(function () {
+      document.documentElement.classList.add("styles-loaded");
+    }, 2500);
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=8" />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+    media="print"
+    onload="this.media='all'"
+  />
+
+  <noscript>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+    />
+  </noscript>
 </head>
 <body>
   <a class="skip-link" href="#browse">Skip to listings</a>
@@ -445,8 +505,8 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js?v=8"></script>
-  <script src="data.js?v=8"></script>
-  <script src="script.js?v=8"></script>
+  <script src="config.js?v=9"></script>
+  <script src="data.js?v=9"></script>
+  <script src="script.js?v=9"></script>
 </body>
 </html>
